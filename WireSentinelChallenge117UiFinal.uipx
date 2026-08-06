@@ -1,0 +1,48 @@
+{
+    "DocVersion": "1.0.0",
+    "StudioMinVersion": "2025.04.0",
+    "SolutionId": "6140e54a-c5c1-4fe8-12bc-08deee108be9",
+    "Projects": [
+        {
+            "Type": "Agent",
+            "ProjectRelativePath": "WireSentinelExtractionAgent/project.uiproj",
+            "Id": "be542f14-a81b-4b14-b7df-b7d08613088e"
+        },
+        {
+            "Type": "AppV2",
+            "ProjectRelativePath": "WireSentinelReviewAction/project.uiproj",
+            "Id": "0b095c35-aa64-489d-83d7-b9dc131cc662"
+        },
+        {
+            "Type": "Api",
+            "ProjectRelativePath": "WireSentinelCopilotQueryApi/project.uiproj",
+            "Id": "b1551ac2-cdcb-4875-bdd9-76c1918d3e0f"
+        },
+        {
+            "Type": "Agent",
+            "ProjectRelativePath": "WireSentinelCopilot/project.uiproj",
+            "Id": "9000a255-74f3-4c0f-84fa-acf43096c090"
+        },
+        {
+            "Type": "Api",
+            "ProjectRelativePath": "WireSentinelBankingAdapter/project.uiproj",
+            "Id": "09c7fa82-cb6f-4ace-a452-acf73007cc4c"
+        },
+        {
+            "Type": "AppV2",
+            "ProjectRelativePath": "WireSentinelApp/project.uiproj",
+            "Id": "b769f143-046f-4ff6-be5a-1a4b9da6d9aa"
+        },
+        {
+            "Type": "Function",
+            "ProjectRelativePath": "WireSentinelIxpAdapter122/project.uiproj",
+            "Id": "de08406d-bd15-40af-8d87-c51a0579956a"
+        },
+        {
+            "Type": "Flow",
+            "ProjectRelativePath": "WireSentinelFlow/project.uiproj",
+            "Id": "310d238e-9584-4714-aaf5-8a18c7eefb10"
+        }
+    ],
+    "AutomationHubIdeaUrl": null
+}

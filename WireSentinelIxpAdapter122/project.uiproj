@@ -1,0 +1,6 @@
+{
+  "ProjectType": "Function",
+  "Name": "WireSentinelIxpAdapter122",
+  "Description": "Deterministic UiPath IXP runtime adapter for WireSentinel.",
+  "MainFile": null
+}

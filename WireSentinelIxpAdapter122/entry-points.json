@@ -1,0 +1,342 @@
+{
+    "$schema": "https://cloud.uipath.com/draft/2024-12/entry-point",
+    "$id": "entry-points.json",
+    "entryPoints": [
+        {
+            "filePath": "main",
+            "uniqueId": "545ae91d-d12a-41af-98ab-9b111deb9b6b",
+            "type": "function",
+            "input": {
+                "type": "object",
+                "properties": {
+                    "wire_file": {
+                        "type": "object"
+                    },
+                    "supporting_file": {
+                        "type": "object"
+                    }
+                },
+                "required": [
+                    "wire_file"
+                ]
+            },
+            "output": {
+                "type": "object",
+                "properties": {
+                    "content": {
+                        "type": "string"
+                    },
+                    "error_type": {
+                        "type": "string"
+                    },
+                    "error_message": {
+                        "type": "string"
+                    }
+                },
+                "required": []
+            },
+            "graph": {
+                "nodes": [
+                    {
+                        "id": "main.py:396",
+                        "name": "main",
+                        "type": "function",
+                        "metadata": {
+                            "file": "main.py"
+                        }
+                    },
+                    {
+                        "id": "main.py:39",
+                        "name": "_coerce_attachment",
+                        "type": "function",
+                        "metadata": {
+                            "file": "main.py"
+                        }
+                    },
+                    {
+                        "id": "main.py:59",
+                        "name": "_attachment_path",
+                        "type": "function",
+                        "metadata": {
+                            "file": "main.py"
+                        }
+                    },
+                    {
+                        "id": "main.py:210",
+                        "name": "_normalise_document",
+                        "type": "function",
+                        "metadata": {
+                            "file": "main.py"
+                        }
+                    },
+                    {
+                        "id": "main.py:72",
+                        "name": "_as_jsonable",
+                        "type": "function",
+                        "metadata": {
+                            "file": "main.py"
+                        }
+                    },
+                    {
+                        "id": "main.py:92",
+                        "name": "_field_groups",
+                        "type": "function",
+                        "metadata": {
+                            "file": "main.py"
+                        }
+                    },
+                    {
+                        "id": "main.py:96",
+                        "name": "_field_map",
+                        "type": "function",
+                        "metadata": {
+                            "file": "main.py"
+                        }
+                    },
+                    {
+                        "id": "main.py:113",
+                        "name": "_confidence",
+                        "type": "function",
+                        "metadata": {
+                            "file": "main.py"
+                        }
+                    },
+                    {
+                        "id": "main.py:84",
+                        "name": "_money",
+                        "type": "function",
+                        "metadata": {
+                            "file": "main.py"
+                        }
+                    },
+                    {
+                        "id": "main.py:104",
+                        "name": "_field_value",
+                        "type": "function",
+                        "metadata": {
+                            "file": "main.py"
+                        }
+                    },
+                    {
+                        "id": "main.py:306",
+                        "name": "_evidence_pack",
+                        "type": "function",
+                        "metadata": {
+                            "file": "main.py"
+                        }
+                    },
+                    {
+                        "id": "main.py:76",
+                        "name": "_normalise_name",
+                        "type": "function",
+                        "metadata": {
+                            "file": "main.py"
+                        }
+                    }
+                ],
+                "edges": [
+                    {
+                        "source": "main.py:396",
+                        "target": "main.py:39"
+                    },
+                    {
+                        "source": "main.py:396",
+                        "target": "main.py:59"
+                    },
+                    {
+                        "source": "main.py:72",
+                        "target": "main.py:72"
+                    },
+                    {
+                        "source": "main.py:72",
+                        "target": "main.py:72"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:72"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:92"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:96"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:96"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:113"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:113"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:84"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:104"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:104"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:84"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:96"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:84"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:84"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:104"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:104"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:104"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:104"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:104"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:104"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:104"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:104"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:104"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:104"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:104"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:104"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:104"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:104"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:104"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:104"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:104"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:104"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:104"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:104"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:104"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:104"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:104"
+                    },
+                    {
+                        "source": "main.py:210",
+                        "target": "main.py:104"
+                    },
+                    {
+                        "source": "main.py:396",
+                        "target": "main.py:210"
+                    },
+                    {
+                        "source": "main.py:396",
+                        "target": "main.py:39"
+                    },
+                    {
+                        "source": "main.py:306",
+                        "target": "main.py:76"
+                    },
+                    {
+                        "source": "main.py:306",
+                        "target": "main.py:76"
+                    },
+                    {
+                        "source": "main.py:306",
+                        "target": "main.py:76"
+                    },
+                    {
+                        "source": "main.py:306",
+                        "target": "main.py:76"
+                    },
+                    {
+                        "source": "main.py:396",
+                        "target": "main.py:306"
+                    },
+                    {
+                        "source": "main.py:396",
+                        "target": "main.py:59"
+                    },
+                    {
+                        "source": "main.py:396",
+                        "target": "main.py:210"
+                    }
+                ]
+            }
+        }
+    ]
+}

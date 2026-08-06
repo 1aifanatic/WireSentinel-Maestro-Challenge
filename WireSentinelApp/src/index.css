@@ -1,0 +1,626 @@
+html,
+body,
+#root {
+  min-width: 320px;
+  min-height: 100%;
+  margin: 0;
+  background: #f5f2eb;
+}
+
+body {
+  min-height: 100vh;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.cockpit-shell,
+.cockpit-signin {
+  color: #282621;
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.cockpit-shell {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.cockpit-bar {
+  position: relative;
+  z-index: 35;
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  min-height: 68px;
+  padding: 10px clamp(16px, 2vw, 28px);
+  background: rgba(255, 253, 248, 0.97);
+  border-bottom: 1px solid #ddd6ca;
+}
+
+.cockpit-brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 220px;
+}
+
+.cockpit-shield {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 50%;
+  color: #fffdf8;
+  background: #282621;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.cockpit-brand b,
+.cockpit-brand span {
+  display: block;
+}
+
+.cockpit-brand b {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.cockpit-brand span {
+  margin-top: 4px;
+  color: #706a61;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.cockpit-health {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #706a61;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.cockpit-health > i {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #3f7462;
+  box-shadow: 0 0 0 4px rgba(63, 116, 98, 0.12);
+}
+
+.cockpit-health span {
+  margin-left: 12px;
+  color: #8a8379;
+  font-weight: 600;
+}
+
+.cockpit-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.cockpit-controls button,
+.queue-pagination button {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 13px;
+  color: #514c45;
+  background: #fffdf8;
+  border: 1px solid #d7d0c4;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.cockpit-controls button:hover:not(:disabled),
+.queue-pagination button:hover:not(:disabled) {
+  color: #282621;
+  background: #eee9df;
+}
+
+.cockpit-controls button:focus-visible,
+.queue-pagination button:focus-visible,
+.queue-filters button:focus-visible,
+.queue-row:focus-visible,
+.queue-search input:focus-visible,
+.cockpit-signin button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(189, 90, 61, 0.26);
+}
+
+.cockpit-controls button:disabled,
+.queue-pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.queue-toggle {
+  display: none;
+}
+
+.cockpit-error {
+  position: fixed;
+  z-index: 60;
+  top: 80px;
+  left: 50%;
+  width: min(760px, calc(100% - 32px));
+  padding: 12px 15px;
+  color: #8f3f3b;
+  background: #f7e2df;
+  border: 1px solid #dfb6ae;
+  border-radius: 10px;
+  box-shadow: 0 14px 40px rgba(74, 48, 40, 0.16);
+  font-size: 13px;
+  line-height: 1.5;
+  transform: translateX(-50%);
+}
+
+.cockpit-main {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  height: calc(100vh - 68px);
+  min-height: 0;
+}
+
+.case-queue {
+  position: relative;
+  z-index: 30;
+  display: grid;
+  grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+  min-width: 0;
+  min-height: 0;
+  color: #282621;
+  background: #fffdf8;
+  border-right: 1px solid #ddd6ca;
+}
+
+.queue-heading {
+  padding: 23px 20px 16px;
+}
+
+.queue-heading p {
+  margin: 0;
+  color: #a04831;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.queue-heading h1 {
+  margin: 6px 0 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+}
+
+.queue-heading > span {
+  display: block;
+  margin-top: 6px;
+  color: #706a61;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.queue-search {
+  position: relative;
+  display: block;
+  margin: 0 14px 12px;
+}
+
+.queue-search svg {
+  position: absolute;
+  top: 50%;
+  left: 13px;
+  width: 18px;
+  height: 18px;
+  color: #8a8379;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.queue-search input {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px 0 40px;
+  color: #282621;
+  background: #f5f2eb;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.queue-search input::placeholder {
+  color: #8a8379;
+}
+
+.queue-filters {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
+  margin: 0 14px 12px;
+  padding: 4px;
+  background: #eee9df;
+  border-radius: 10px;
+}
+
+.queue-filters button {
+  min-width: 0;
+  min-height: 40px;
+  padding: 5px 4px;
+  color: #706a61;
+  background: transparent;
+  border: 0;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 750;
+  line-height: 1.25;
+}
+
+.queue-filters button span {
+  display: block;
+  margin-top: 1px;
+  font-size: 11px;
+}
+
+.queue-filters button.is-active {
+  color: #282621;
+  background: #fffdf8;
+  box-shadow: 0 2px 8px rgba(54, 46, 36, 0.09);
+}
+
+.queue-list {
+  min-height: 0;
+  padding: 0 8px 8px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.queue-row {
+  display: grid;
+  width: 100%;
+  min-height: 94px;
+  gap: 4px;
+  padding: 13px 12px;
+  color: #282621;
+  background: transparent;
+  border: 0;
+  border-left: 3px solid transparent;
+  border-radius: 7px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.queue-row + .queue-row {
+  border-top: 1px solid #eee9df;
+}
+
+.queue-row:hover {
+  background: #f5f2eb;
+}
+
+.queue-row.is-selected {
+  background: #f7e6df;
+  border-left-color: #bd5a3d;
+}
+
+.queue-row-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+}
+
+.queue-row strong {
+  overflow: hidden;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.queue-risk {
+  flex: 0 0 auto;
+  padding: 3px 7px;
+  border-radius: 999px;
+  color: #706a61;
+  background: #eee9df;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.queue-risk.critical,
+.queue-risk.high {
+  color: #a23f3d;
+  background: #f7e2df;
+}
+
+.queue-risk.medium {
+  color: #9a681c;
+  background: #f6ebd2;
+}
+
+.queue-risk.low {
+  color: #3f7462;
+  background: #e5efe9;
+}
+
+.queue-beneficiary,
+.queue-status {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.queue-beneficiary {
+  color: #514c45;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.queue-status {
+  color: #7d766c;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.queue-empty {
+  margin: 12px;
+  padding: 22px 14px;
+  color: #706a61;
+  background: #f5f2eb;
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.55;
+  text-align: center;
+}
+
+.queue-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: #fffdf8;
+  border-top: 1px solid #ddd6ca;
+}
+
+.queue-pagination button {
+  padding: 0;
+  font-size: 16px;
+}
+
+.queue-pagination span {
+  color: #706a61;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.case-canvas {
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  background: #f5f2eb;
+}
+
+.empty-canvas {
+  display: grid;
+  min-height: 100%;
+  place-content: center;
+  justify-items: center;
+  padding: 30px;
+  text-align: center;
+}
+
+.empty-canvas h1 {
+  margin: 18px 0 7px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 30px;
+  font-weight: 500;
+}
+
+.empty-canvas p {
+  max-width: 440px;
+  margin: 0;
+  color: #706a61;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.queue-scrim {
+  display: none;
+}
+
+.cockpit-signin {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 32px;
+  background:
+    radial-gradient(circle at 50% 0, rgba(189, 90, 61, 0.14), transparent 34rem),
+    #f5f2eb;
+}
+
+.cockpit-signin section {
+  width: min(620px, 100%);
+  padding: clamp(32px, 6vw, 64px);
+  text-align: center;
+  background: #fffdf8;
+  border-radius: 22px;
+  box-shadow: 0 28px 80px rgba(54, 46, 36, 0.13);
+}
+
+.cockpit-signin .cockpit-shield {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 20px;
+}
+
+.cockpit-signin section > p:first-of-type {
+  margin: 0;
+  color: #a04831;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.cockpit-signin h1 {
+  margin: 10px 0 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(40px, 7vw, 64px);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.cockpit-signin h2 {
+  margin: 10px 0 0;
+  color: #514c45;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(22px, 3vw, 28px);
+  font-weight: 500;
+}
+
+.cockpit-signin .signin-copy {
+  max-width: 490px;
+  margin: 24px auto 0;
+  color: #706a61;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.cockpit-signin button {
+  min-height: 48px;
+  margin-top: 26px;
+  padding: 0 20px;
+  color: #fff;
+  background: #bd5a3d;
+  border: 0;
+  border-radius: 11px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.cockpit-signin button:hover:not(:disabled) {
+  background: #8f3f2a;
+}
+
+.cockpit-signin small {
+  display: block;
+  margin-top: 15px;
+  color: #8a8379;
+  font-size: 11px;
+}
+
+@media (max-width: 1100px) {
+  .cockpit-main {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .case-queue {
+    position: fixed;
+    z-index: 42;
+    top: 68px;
+    bottom: 0;
+    left: 0;
+    width: 280px;
+    transform: translateX(-100%);
+    transition: transform 190ms ease;
+  }
+
+  .case-queue.is-open {
+    transform: translateX(0);
+  }
+
+  .queue-toggle {
+    display: inline-block;
+  }
+
+  .queue-scrim {
+    position: fixed;
+    z-index: 40;
+    inset: 68px 0 0;
+    display: block;
+    visibility: hidden;
+    background: rgba(40, 38, 33, 0.32);
+    opacity: 0;
+    transition: opacity 190ms ease, visibility 190ms ease;
+  }
+
+  .queue-scrim.is-open {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+@media (max-width: 720px) {
+  .cockpit-bar {
+    gap: 10px;
+  }
+
+  .cockpit-brand {
+    min-width: 0;
+    margin-right: auto;
+  }
+
+  .cockpit-brand span,
+  .cockpit-health {
+    display: none;
+  }
+
+  .cockpit-controls button {
+    padding: 0 10px;
+  }
+
+  .cockpit-controls button:last-child {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

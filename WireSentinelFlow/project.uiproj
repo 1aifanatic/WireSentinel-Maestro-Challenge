@@ -1,0 +1,6 @@
+{
+  "ProjectType": "Flow",
+  "Name": "WireSentinelFlow",
+  "Description": "Agentic wire fraud review with IXP document evidence, deterministic policy, human decisions, and governed sandbox execution.",
+  "MainFile": null
+}

@@ -1,0 +1,9 @@
+{
+  "type": "Coded",
+  "solutionResourceSubType": "Coded",
+  "config": {
+    "isCompiled": true,
+    "bundlePath": "dist"
+  },
+  "projectId": "f17173c6-39a4-4dfe-9e91-40980281f2d1"
+}

@@ -1,0 +1,26 @@
+{
+  "version": "2.0",
+  "resources": [
+    {
+      "resource": "process",
+      "key": "WireSentinelCopilotQueryApi",
+      "value": {
+        "name": {
+          "defaultValue": "WireSentinelCopilotQueryApi",
+          "isExpression": false,
+          "displayName": "Process name"
+        },
+        "folderPath": {
+          "defaultValue": "Shared/WireSentinel",
+          "isExpression": false,
+          "displayName": "Folder path"
+        }
+      },
+      "metadata": {
+        "subType": "api",
+        "bindingsVersion": "2.2",
+        "solutionsSupport": "true"
+      }
+    }
+  ]
+}

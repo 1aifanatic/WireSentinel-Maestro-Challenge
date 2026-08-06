@@ -1,0 +1,139 @@
+{
+  "version": "1.0",
+  "id": "74ad2d66-6a18-4839-9851-82acdaa2ed81",
+  "name": "WireReviewScenarios",
+  "evaluatorRefs": [
+    "finalstatuscontains-e49015e5",
+    "decisionjudge-30b2e391",
+    "risklevelmatch-b86ef2a4"
+  ],
+  "evaluations": [
+    {
+      "id": "2e31e014-50ad-4be2-9531-3a5043668d37",
+      "name": "john",
+      "inputs": {
+        "evalEmailBody": "Please process the following ACH transfer. Customer: John Carter (ID C1001), account 11110001. Type: ACH for USD 2500. Beneficiary: Acme Supplies LLC at First National Bank, United States (US). Routing/SWIFT: 021000021. Purpose: Monthly vendor invoice payment. Requested date: 2026-06-01. Authorized signature is on file.",
+        "evalEmailSubject": "Wire transfer request - TR-1001",
+        "evalEmailFrom": "john@example.com",
+        "evalAttachmentName": "01_low_release.pdf"
+      },
+      "expectedOutput": {
+        "risk_level": "Low",
+        "final_status": "Payment Released"
+      },
+      "evaluationCriterias": {
+        "decisionjudge-30b2e391": null,
+        "finalstatuscontains-e49015e5": {
+          "searchText": "Released"
+        },
+        "risklevelmatch-b86ef2a4": null
+      },
+      "createdAt": "2026-06-03T00:18:27.055Z",
+      "updatedAt": "2026-06-03T00:18:27.055Z"
+    },
+    {
+      "id": "b28210c3-777f-439e-a6e4-afcb8a92bede",
+      "name": "priya",
+      "inputs": {
+        "evalEmailBody": "Please process this urgent wire transfer today. Customer: Priya Shah (ID C1002), account 22220002. Type: WIRE for USD 85000. Beneficiary: Nova Meridian Trading Ltd at Emirates Gulf Bank, United Arab Emirates (AE). Routing/SWIFT: NMTLAEAD. Purpose: Urgent consulting payment. Requested date: 2026-06-01. Authorized signature is on file.",
+        "evalEmailSubject": "Wire transfer request - urgent",
+        "evalEmailFrom": "priya@example.com",
+        "evalAttachmentName": "02_high_manager.pdf"
+      },
+      "expectedOutput": {
+        "risk_level": "High",
+        "final_status": "Payment Released"
+      },
+      "evaluationCriterias": {
+        "decisionjudge-30b2e391": null,
+        "finalstatuscontains-e49015e5": {
+          "searchText": "Released"
+        },
+        "risklevelmatch-b86ef2a4": null
+      },
+      "createdAt": "2026-06-03T00:18:29.608Z",
+      "updatedAt": "2026-06-03T00:18:29.608Z"
+    },
+    {
+      "id": "ab9a9174-2973-4a1a-a840-2b69bb22982a",
+      "name": "michael",
+      "inputs": {
+        "evalEmailBody": "Please process the following wire transfer. Customer: Michael Reed (ID C1003), account 33330003. Type: WIRE for USD 42000. Beneficiary: Mikhael Redov Holdings at Volga Commerce Bank, Russia (RU). Routing/SWIFT: VOLGRUMM. Purpose: Investment transfer. Requested date: 2026-06-01. Authorized signature is on file.",
+        "evalEmailSubject": "Wire transfer instruction",
+        "evalEmailFrom": "michael@example.com",
+        "evalAttachmentName": "03_critical_sanctions.pdf"
+      },
+      "expectedOutput": {
+        "risk_level": "Critical",
+        "final_status": "Held / Monitored"
+      },
+      "evaluationCriterias": {
+        "decisionjudge-30b2e391": null,
+        "finalstatuscontains-e49015e5": {
+          "searchText": "Monitored"
+        },
+        "risklevelmatch-b86ef2a4": null
+      },
+      "createdAt": "2026-06-03T00:18:32.436Z",
+      "updatedAt": "2026-06-03T00:18:32.436Z"
+    },
+    {
+      "id": "6ed0d08d-162c-4760-8b78-391ba8e80a1a",
+      "name": "dana",
+      "inputs": {
+        "evalEmailBody": "Please process this payment. Customer: Dana Lowe (ID C1001), account 11110001. Type: ACH for USD 1500. Beneficiary: Acme Supplies LLC at First National Bank, United States (US). Purpose: inv. Requested date: 2026-06-01. No routing number provided and signature not on file.",
+        "evalEmailSubject": "Payment request",
+        "evalEmailFrom": "dana@example.com",
+        "evalAttachmentName": "04_incomplete_reject.pdf"
+      },
+      "expectedOutput": {
+        "risk_level": "Rejected",
+        "final_status": "Payment Rejected / Held"
+      },
+      "evaluationCriterias": {
+        "decisionjudge-30b2e391": null,
+        "finalstatuscontains-e49015e5": {
+          "searchText": "Rejected"
+        },
+        "risklevelmatch-b86ef2a4": null
+      },
+      "createdAt": "2026-06-03T00:18:34.890Z",
+      "updatedAt": "2026-06-03T00:18:34.890Z"
+    },
+    {
+      "id": "9fc301fb-386b-4b2d-b447-301ba0bcebe0",
+      "name": "ghost",
+      "inputs": {
+        "evalEmailBody": "Please process the following wire transfer. Customer: Ghost Account (ID C9999), account 99999999. Type: WIRE for USD 30000. Beneficiary: Unknown Payee at Nowhere Bank, United Kingdom (GB). Routing/SWIFT: NOWHGB22. Purpose: Consulting services rendered. Requested date: 2026-06-01. Authorized signature is on file.",
+        "evalEmailSubject": "Wire transfer instruction",
+        "evalEmailFrom": "ghost@example.com",
+        "evalAttachmentName": "05_unknown_reject.pdf"
+      },
+      "expectedOutput": {
+        "risk_level": "Rejected",
+        "final_status": "Payment Rejected / Held"
+      },
+      "evaluationCriterias": {
+        "decisionjudge-30b2e391": null,
+        "finalstatuscontains-e49015e5": {
+          "searchText": "Rejected"
+        },
+        "risklevelmatch-b86ef2a4": null
+      },
+      "createdAt": "2026-06-03T00:18:37.258Z",
+      "updatedAt": "2026-06-03T00:18:37.258Z"
+    }
+  ],
+  "selectedEntrypoint": "emailReceivedWireAch1",
+  "fileName": "evaluation-set-wirereviewscenarios-74ad2d66.json",
+  "createdAt": "2026-06-02T23:05:11.752Z",
+  "updatedAt": "2026-06-04T17:44:15.214Z",
+  "batchSize": 10,
+  "timeoutMinutes": 20,
+  "target": {
+    "kind": "flow",
+    "entrypoint": "emailReceivedWireAch1"
+  },
+  "nodeEval": false,
+  "schemaVersion": 2
+}

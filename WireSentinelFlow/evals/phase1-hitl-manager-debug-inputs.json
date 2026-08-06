@@ -1,0 +1,9 @@
+{
+  "externalActionsEnabled": true,
+  "evalEmailSubject": "Phase 1 HITL Manager Approval verification",
+  "evalEmailFrom": "codex-test@staging.local",
+  "evalAttachmentName": "wire-instruction.pdf",
+  "evalEmailBody": "Wire transfer request. Request ID TEST-HITL-7A31. Customer Demo Customer, customer ID CUST-1001, account 000123456789. Transfer type WIRE. Amount USD 24500. Beneficiary Acme Components Ltd, bank First International Bank, country US, SWIFT FIBKUS33. Purpose: payment for approved supplier invoice INV-2026-0728. Requested date 2026-07-28. Authorized signature is on file.",
+  "evalParsedPaymentJson": "{\"request_id\":\"TEST-HITL-7A31\",\"customer_name\":\"Demo Customer\",\"customer_id\":\"CUST-1001\",\"account_number\":\"000123456789\",\"transfer_type\":\"WIRE\",\"amount\":24500,\"beneficiary_name\":\"Acme Components Ltd\",\"beneficiary_bank\":\"First International Bank\",\"beneficiary_country\":\"US\",\"routing_or_swift\":\"FIBKUS33\",\"purpose_of_payment\":\"Approved supplier invoice INV-2026-0728\",\"requested_date\":\"2026-07-28\",\"signature_flag\":true}",
+  "evalRiskRouteOverride": "High"
+}

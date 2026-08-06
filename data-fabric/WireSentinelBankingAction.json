@@ -1,0 +1,95 @@
+{
+  "displayName": "WireSentinel Banking Actions",
+  "description": "Durable, replay-safe evidence for guarded synthetic banking actions. This entity never represents production funds movement.",
+  "isRbacEnabled": true,
+  "fields": [
+    {
+      "fieldName": "IdempotencyKey",
+      "type": "STRING",
+      "displayName": "Idempotency Key",
+      "isRequired": true,
+      "isUnique": true,
+      "lengthLimit": 300
+    },
+    {
+      "fieldName": "CaseKey",
+      "type": "STRING",
+      "displayName": "Case ID",
+      "isRequired": true,
+      "lengthLimit": 100
+    },
+    {
+      "fieldName": "RequestId",
+      "type": "STRING",
+      "displayName": "Wire Request ID",
+      "lengthLimit": 100
+    },
+    {
+      "fieldName": "Action",
+      "type": "STRING",
+      "displayName": "Requested Action",
+      "isRequired": true,
+      "lengthLimit": 80
+    },
+    {
+      "fieldName": "Status",
+      "type": "STRING",
+      "displayName": "Execution Status",
+      "isRequired": true,
+      "lengthLimit": 120
+    },
+    {
+      "fieldName": "Actor",
+      "type": "STRING",
+      "displayName": "Actor",
+      "lengthLimit": 300
+    },
+    {
+      "fieldName": "CorrelationId",
+      "type": "STRING",
+      "displayName": "Correlation ID",
+      "isRequired": true,
+      "lengthLimit": 160
+    },
+    {
+      "fieldName": "RiskLevel",
+      "type": "STRING",
+      "displayName": "Risk Level",
+      "lengthLimit": 40
+    },
+    {
+      "fieldName": "FinalDecision",
+      "type": "STRING",
+      "displayName": "Final Decision",
+      "lengthLimit": 120
+    },
+    {
+      "fieldName": "Sandbox",
+      "type": "BOOLEAN",
+      "displayName": "Sandbox Only",
+      "isRequired": true,
+      "defaultValue": "true"
+    },
+    {
+      "fieldName": "ProcessedAt",
+      "type": "DATETIME_WITH_TZ",
+      "displayName": "Processed At",
+      "isRequired": true
+    },
+    {
+      "fieldName": "EvidenceJson",
+      "type": "MULTILINE_TEXT",
+      "displayName": "Guard Evidence",
+      "lengthLimit": 10000
+    },
+    {
+      "fieldName": "AttemptCount",
+      "type": "INTEGER",
+      "displayName": "Attempt Count",
+      "isRequired": true,
+      "defaultValue": "1",
+      "minValue": 1,
+      "maxValue": 100
+    }
+  ]
+}

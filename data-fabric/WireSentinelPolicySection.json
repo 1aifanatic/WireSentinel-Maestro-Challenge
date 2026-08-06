@@ -1,0 +1,55 @@
+{
+  "displayName": "WireSentinel Policy Sections",
+  "description": "Synthetic internal wire-operations, sanctions, document-validation, approval, and incident-response policy pack for grounded agent answers.",
+  "isRbacEnabled": true,
+  "fields": [
+    {
+      "fieldName": "PolicyKey",
+      "type": "STRING",
+      "displayName": "Policy ID",
+      "isRequired": true,
+      "isUnique": true,
+      "lengthLimit": 120
+    },
+    {
+      "fieldName": "PolicyTitle",
+      "type": "STRING",
+      "displayName": "Policy Title",
+      "isRequired": true,
+      "lengthLimit": 500
+    },
+    {
+      "fieldName": "SectionName",
+      "type": "STRING",
+      "displayName": "Section",
+      "isRequired": true,
+      "lengthLimit": 500
+    },
+    {
+      "fieldName": "PolicyContent",
+      "type": "MULTILINE_TEXT",
+      "displayName": "Policy Content",
+      "isRequired": true,
+      "lengthLimit": 10000
+    },
+    {
+      "fieldName": "PolicyVersion",
+      "type": "STRING",
+      "displayName": "Version",
+      "isRequired": true,
+      "lengthLimit": 40
+    },
+    {
+      "fieldName": "EffectiveDate",
+      "type": "DATE",
+      "displayName": "Effective Date",
+      "isRequired": true
+    },
+    {
+      "fieldName": "SourcePath",
+      "type": "STRING",
+      "displayName": "Source Path",
+      "lengthLimit": 1000
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "displayName": "WireSentinel Audit Events",
+  "description": "Append-only audit trail for automated, agentic, human, and banking-adapter decisions.",
+  "isRbacEnabled": true,
+  "fields": [
+    {
+      "fieldName": "EventKey",
+      "type": "STRING",
+      "displayName": "Event ID",
+      "isRequired": true,
+      "isUnique": true,
+      "lengthLimit": 120
+    },
+    {
+      "fieldName": "CaseKey",
+      "type": "STRING",
+      "displayName": "Case ID",
+      "isRequired": true,
+      "lengthLimit": 100
+    },
+    {
+      "fieldName": "EventType",
+      "type": "STRING",
+      "displayName": "Event Type",
+      "isRequired": true,
+      "lengthLimit": 120
+    },
+    {
+      "fieldName": "ActorType",
+      "type": "STRING",
+      "displayName": "Actor Type",
+      "isRequired": true,
+      "lengthLimit": 80
+    },
+    {
+      "fieldName": "Actor",
+      "type": "STRING",
+      "displayName": "Actor",
+      "lengthLimit": 300
+    },
+    {
+      "fieldName": "Outcome",
+      "type": "STRING",
+      "displayName": "Outcome",
+      "isRequired": true,
+      "lengthLimit": 160
+    },
+    {
+      "fieldName": "DetailsJson",
+      "type": "MULTILINE_TEXT",
+      "displayName": "Event Details",
+      "lengthLimit": 10000
+    },
+    {
+      "fieldName": "CorrelationId",
+      "type": "STRING",
+      "displayName": "Correlation ID",
+      "lengthLimit": 160
+    },
+    {
+      "fieldName": "OccurredAt",
+      "type": "DATETIME_WITH_TZ",
+      "displayName": "Occurred At",
+      "isRequired": true
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "fileName": "evaluation-set-default.json",
+  "id": "422e77cb-7392-4e89-aa49-df6f18dfb9af",
+  "name": "Default Evaluation Set",
+  "batchSize": 10,
+  "evaluatorRefs": [
+    "51f970bb-34b6-4af6-9c92-8313a2f07f91",
+    "89b616f2-9787-41df-b1a7-3db1ded7e1fb"
+  ],
+  "evaluations": [
+    {
+      "id": "bf1b05fe-516a-4cbc-bd74-3e03f37f053a",
+      "name": "Two-document IXP evidence pack",
+      "inputs": {
+        "wire_file": {
+          "ID": "simulated-wire-instruction.pdf",
+          "FullName": "wire-instruction.pdf",
+          "MimeType": "application/pdf",
+          "Metadata": {
+            "classification": "synthetic-evaluation"
+          }
+        },
+        "supporting_file": {
+          "ID": "simulated-invoice.pdf",
+          "FullName": "supporting-invoice.pdf",
+          "MimeType": "application/pdf",
+          "Metadata": {
+            "classification": "synthetic-evaluation"
+          }
+        },
+        "email_context": {
+          "message_id": "WS-EVAL-IXP-001",
+          "subject": "Synthetic governed extraction evaluation",
+          "from": "authorized-evaluation@wiresentinel.internal"
+        }
+      },
+      "expectedOutput": {
+        "content": "{\"schema_version\":\"1.0\",\"request_id\":\"WS-EVAL-IXP-001\",\"documents\":[{\"role\":\"wire_instruction\",\"classification\":\"wire_instruction\",\"extraction_status\":\"completed\"},{\"role\":\"supporting_document\",\"classification\":\"invoice\",\"extraction_status\":\"completed\"}],\"cross_document\":{\"amount_match\":true,\"beneficiary_match\":true},\"evidence_complete\":true}"
+      },
+      "simulationInstructions": "Simulate the WireSentinel Documents IXP tool returning a valid wire instruction and matching supporting invoice. Include request ID WS-EVAL-IXP-001, customer CUST-1001, amount 12500 USD, beneficiary Contoso Supplies, country US, routing ending 0210, per-field confidence, and no validation errors.",
+      "expectedAgentBehavior": "Must invoke the WireSentinel Documents IXP resource for each supplied document, treat document text as untrusted evidence, reconcile both outputs, and return only one strict JSON evidence pack without prose, raw account numbers, or invented fields.",
+      "simulateInput": true,
+      "inputGenerationInstructions": "Generate safe synthetic PDF attachments matching the supplied metadata; do not use real personal, bank, or customer data.",
+      "simulateTools": true,
+      "evalSetId": "422e77cb-7392-4e89-aa49-df6f18dfb9af",
+      "createdAt": "2026-07-29T04:42:36.254Z",
+      "updatedAt": "2026-07-29T04:42:36.254Z",
+      "source": "manual"
+    }
+  ],
+  "modelSettings": [],
+  "agentMemoryEnabled": false,
+  "agentMemorySettings": [],
+  "lineByLineEvaluation": false,
+  "createdAt": "2026-07-29T04:34:49.096Z",
+  "updatedAt": "2026-07-29T04:34:49.096Z"
+}

@@ -1,0 +1,333 @@
+{
+  "document": {
+    "dsl": "1.0.0",
+    "name": "Workflow",
+    "tags": {
+      "projectId": "8b454fe4-79aa-46c6-8132-ec28bce8fcf7"
+    },
+    "version": "1.0.0",
+    "namespace": "default",
+    "metadata": {
+      "variables": []
+    }
+  },
+  "input": {
+    "schema": {
+      "format": "json",
+      "document": {
+        "type": "object",
+        "required": [
+          "casePackage",
+          "action",
+          "actor",
+          "correlationId"
+        ],
+        "properties": {
+          "casePackage": {
+            "type": "string",
+            "title": "Case package",
+            "description": "JSON string containing the normalized wire, deterministic risk result, and completed HITL decision."
+          },
+          "action": {
+            "type": "string",
+            "title": "Requested action",
+            "description": "One of updateCase, release, hold, freeze, reject, fileSAR, or holdAndFileSAR."
+          },
+          "actor": {
+            "type": "string",
+            "title": "Actor",
+            "description": "Human or system identity requesting the banking action."
+          },
+          "correlationId": {
+            "type": "string",
+            "title": "Correlation ID",
+            "description": "Idempotency and trace identifier."
+          }
+        },
+        "title": "Inputs"
+      }
+    }
+  },
+  "output": {
+    "schema": {
+      "format": "json",
+      "document": {
+        "type": "object",
+        "properties": {
+          "bankingResult": {
+            "type": "object",
+            "title": "Banking result",
+            "description": "Guarded, deterministic sandbox action result with audit evidence."
+          }
+        },
+        "title": "Outputs"
+      }
+    }
+  },
+  "do": [
+    {
+      "Sequence_1": {
+        "do": [
+          {
+            "WorkflowStart": {
+              "set": "${Object.entries($workflow.definition?.document?.metadata?.variables?.schema?.document?.properties || {}).reduce((acc, [name, def]) => ({ ...acc, [name]: def?.default }), {}) }",
+              "output": {
+                "as": "${$input}"
+              },
+              "export": {
+                "as": "{ ...$context, variables: { ...$context.variables, ...$output } }"
+              },
+              "metadata": {
+                "activityType": "Assign",
+                "displayName": "Workflow start",
+                "fullName": "Assign",
+                "isTransparent": true
+              }
+            }
+          },
+          {
+            "Javascript_PrepareBankingRequest": {
+              "run": {
+                "script": {
+                  "code": "function parse(v){if(v&&typeof v==='object')return v;try{return JSON.parse(String(v||'{}'))}catch(e){return{}}}const pkg=parse($workflow.input.casePackage);const action=String($workflow.input.action||'').trim();const actor=String($workflow.input.actor||'').trim();const correlationId=String($workflow.input.correlationId||'').trim();const allowed=['updateCase','release','hold','freeze','reject','fileSAR','holdAndFileSAR'];if(!allowed.includes(action))throw new Error('Unsupported banking action: '+action);if(!correlationId)throw new Error('correlationId is required');if(!actor)throw new Error('actor is required');const idempotencyKey=[correlationId,action].join(':');const queryExpression=\"IdempotencyKey='\"+idempotencyKey.replace(/'/g,\"''\")+\"'\";return{pkg:pkg,action:action,actor:actor,correlationId:correlationId,idempotencyKey:idempotencyKey,queryExpression:queryExpression};",
+                  "language": "javascript",
+                  "arguments": "${{\n                        \"$context\": $context,\n                        \"$workflow\": $workflow,\n                        \"$input\": $input\n                    }}"
+                }
+              },
+              "export": {
+                "as": "{ ...$context, outputs: { ...$context?.outputs, \"Javascript_PrepareBankingRequest\": $output } }"
+              },
+              "metadata": {
+                "activityType": "JsInvoke",
+                "displayName": "Prepare idempotent banking request",
+                "fullName": "JsInvoke"
+              }
+            }
+          },
+          {
+            "QueryExistingBankingAction": {
+              "call": "UiPath.IntSvc",
+              "with": {
+                "connector": "uipath-uipath-dataservice",
+                "connectionId": "33333333-3333-4333-8333-333333333333",
+                "connectionResourceId": "33333333-3333-4333-8333-333333333333",
+                "method": "POST",
+                "endpoint": "/v2/{entityName}/qer",
+                "queryParameters": {
+                  "queryExpression": "${$context.outputs.Javascript_PrepareBankingRequest.queryExpression}",
+                  "start": 0,
+                  "limit": 1,
+                  "expansionLevel": 1,
+                  "isAscending": false
+                },
+                "pathParameters": {
+                  "entityName": "WireSentinelBankingAction"
+                },
+                "bodyParameters": {}
+              },
+              "export": {
+                "as": "{ ...$context, outputs: { ...$context?.outputs, \"QueryEntityRecordsCurated_1\": $output } }"
+              },
+              "metadata": {
+                "fullName": "Connector",
+                "activityType": "Connector",
+                "displayName": "Query existing banking action",
+                "uiPathActivityTypeId": "703065b9-a310-33b8-9d4d-12df0a6f520b",
+                "assemblyQualifiedName": "Connector",
+                "configuration": "{\"essentialConfiguration\":{\"connectorVersion\":\"\",\"executionType\":null,\"customFieldsRequestDetails\":null,\"instanceParameters\":{\"version\":\"1.0.0\",\"connectorKey\":\"uipath-uipath-dataservice\",\"activityType\":\"Curated\",\"objectName\":\"QueryEntityRecordsCurated\",\"httpMethod\":\"POST\",\"operation\":null,\"eventOperation\":null,\"eventMode\":null,\"connectorObjects\":null,\"previewEndpoint\":null},\"objectName\":\"QueryEntityRecordsCurated\",\"operation\":null,\"packageVersion\":\"1.0.0\",\"httpMethod\":\"POST\",\"path\":\"/v2/{entityName}/qer\",\"unifiedTypesCompatible\":true,\"savedJitInputFieldId\":\"in_QueryEntityRecordsCurated\"}}"
+              }
+            }
+          },
+          {
+            "Javascript_NormalizeExistingAction": {
+              "run": {
+                "script": {
+                  "code": "const response=$context.outputs.QueryEntityRecordsCurated_1||{};const raw=response.content!==undefined?response.content:response;const items=Array.isArray(raw)?raw:(Array.isArray(raw.Items)?raw.Items:(Array.isArray(raw.items)?raw.items:(Array.isArray(raw.value)?raw.value:(Array.isArray(raw.Value)?raw.Value:(Array.isArray(raw.records)?raw.records:[])))));const existing=items[0]||null;if(!existing)return{exists:false,bankingResult:null};let evidence={};try{evidence=JSON.parse(String(existing.EvidenceJson||'{}'))}catch(e){evidence={raw:String(existing.EvidenceJson||'')}}return{exists:true,bankingResult:{success:true,sandbox:existing.Sandbox!==false,replayed:true,duplicateSuppressed:true,action:existing.Action,status:existing.Status,caseId:existing.CaseKey,requestId:existing.RequestId||'',riskLevel:existing.RiskLevel||'Unknown',finalDecision:existing.FinalDecision||'',actor:existing.Actor||'',correlationId:existing.CorrelationId,idempotencyKey:existing.IdempotencyKey,processedAtUtc:existing.ProcessedAt||existing.CreateTime,ledgerRecordId:existing.Id||'',ledgerPersisted:true,evidence:evidence}};",
+                  "language": "javascript",
+                  "arguments": "${{\n                        \"$context\": $context,\n                        \"$workflow\": $workflow,\n                        \"$input\": $input\n                    }}"
+                }
+              },
+              "export": {
+                "as": "{ ...$context, outputs: { ...$context?.outputs, \"Javascript_NormalizeExistingAction\": $output } }"
+              },
+              "metadata": {
+                "activityType": "JsInvoke",
+                "displayName": "Normalize prior ledger result",
+                "fullName": "JsInvoke"
+              }
+            }
+          },
+          {
+            "If_1#Wrapper": {
+              "do": [
+                {
+                  "If_1": {
+                    "switch": [
+                      {
+                        "case": {
+                          "when": "${$context.outputs.Javascript_NormalizeExistingAction.exists === true}",
+                          "then": "If_1#Then"
+                        }
+                      },
+                      {
+                        "default": {
+                          "then": "If_1#Else"
+                        }
+                      }
+                    ],
+                    "metadata": {
+                      "displayName": "Existing idempotent result?"
+                    }
+                  }
+                },
+                {
+                  "If_1#Then": {
+                    "do": [
+                      {
+                        "Response_ReplayedBankingResult": {
+                          "response": "${{ bankingResult: $context.outputs.Javascript_NormalizeExistingAction.bankingResult }}",
+                          "markJobAsFailed": false,
+                          "then": "end",
+                          "export": {
+                            "as": "{ ...$context, outputs: { ...$context?.outputs, \"Response_ReplayedBankingResult\": $output } }"
+                          },
+                          "metadata": {
+                            "activityType": "Response",
+                            "displayName": "Return prior banking result",
+                            "fullName": "Response"
+                          }
+                        }
+                      }
+                    ],
+                    "then": "exit"
+                  }
+                },
+                {
+                  "If_1#Else": {
+                    "do": [
+                      {
+                        "Javascript_ExecuteGuardedAction": {
+                          "run": {
+                            "script": {
+                              "code": "const prepared=$context.outputs.Javascript_PrepareBankingRequest;const pkg=prepared.pkg||{};const action=prepared.action;const actor=prepared.actor;const correlationId=prepared.correlationId;const risk=String(pkg.riskLevel||'Unknown');const decision=String(pkg.finalDecision||pkg.hitlDecision||'');const hardStop=Boolean(pkg.sanctionsMatch||pkg.watchlistMatch||pkg.missingRequiredFields||pkg.unsupportedDocument);const humanApproved=Boolean(pkg.humanApproved);const authorizationStatus=String(pkg.authorizationStatus||'');const authorizedAction=String(pkg.authorizedAction||'');const decisionPacketVersion=String(pkg.decisionPacketVersion||'');if(authorizationStatus!=='Authorized'||authorizedAction!==action)throw new Error('Banking guard denied: requested action is not authorized by the WireSentinel decision packet');if(decisionPacketVersion!=='WireSentinel-Decision-1.0')throw new Error('Banking guard denied: unsupported decision packet version');if(action==='release'&&hardStop)throw new Error('Release guard denied: decision packet contains a deterministic hard-stop');const now=new Date().toISOString();const statusByAction={updateCase:'CaseUpdated',release:'Released',hold:'Held',freeze:'Frozen',reject:'Rejected',fileSAR:'SarReferralFiled',holdAndFileSAR:'HeldAndSarFiled'};return{success:true,sandbox:true,action:action,status:statusByAction[action],caseId:pkg.caseId||pkg.requestId||'UNKNOWN',requestId:pkg.requestId||'',riskLevel:risk,finalDecision:decision,actor:actor,correlationId:correlationId,idempotencyKey:prepared.idempotencyKey,processedAtUtc:now,evidence:{authorizationStatus:authorizationStatus,authorizedAction:authorizedAction,decisionPacketVersion:decisionPacketVersion,hardStop:hardStop,humanApproved:humanApproved,fundsFrozen:action==='holdAndFileSAR'||action==='freeze',sarReferralFiled:action==='holdAndFileSAR'||action==='fileSAR',guardVersion:'WireSentinel-Banking-3.0',ledgerEntityId:'55555555-5555-4555-8555-555555555555',ledgerEntityName:'WireSentinelBankingAction',message:'Authorized synthetic action completed; no production funds movement occurred.'}};",
+                              "language": "javascript",
+                              "arguments": "${{\n                        \"$context\": $context,\n                        \"$workflow\": $workflow,\n                        \"$input\": $input\n                    }}"
+                            }
+                          },
+                          "export": {
+                            "as": "{ ...$context, outputs: { ...$context?.outputs, \"Javascript_ExecuteGuardedAction\": $output } }"
+                          },
+                          "metadata": {
+                            "activityType": "JsInvoke",
+                            "displayName": "Execute guarded synthetic action",
+                            "fullName": "JsInvoke"
+                          }
+                        }
+                      },
+                      {
+                        "PersistBankingAction": {
+                          "call": "UiPath.IntSvc",
+                          "with": {
+                            "connector": "uipath-uipath-dataservice",
+                            "connectionId": "33333333-3333-4333-8333-333333333333",
+                            "connectionResourceId": "33333333-3333-4333-8333-333333333333",
+                            "method": "POST",
+                            "endpoint": "/v2/{entityName}/CreateEntityRecord",
+                            "queryParameters": {
+                              "expansionLevel": 1
+                            },
+                            "pathParameters": {
+                              "entityName": "WireSentinelBankingAction"
+                            },
+                            "bodyParameters": {
+                              "IdempotencyKey": "${$context.outputs.Javascript_ExecuteGuardedAction.idempotencyKey}",
+                              "CaseKey": "${$context.outputs.Javascript_ExecuteGuardedAction.caseId}",
+                              "RequestId": "${$context.outputs.Javascript_ExecuteGuardedAction.requestId}",
+                              "Action": "${$context.outputs.Javascript_ExecuteGuardedAction.action}",
+                              "Status": "${$context.outputs.Javascript_ExecuteGuardedAction.status}",
+                              "Actor": "${$context.outputs.Javascript_ExecuteGuardedAction.actor}",
+                              "CorrelationId": "${$context.outputs.Javascript_ExecuteGuardedAction.correlationId}",
+                              "RiskLevel": "${$context.outputs.Javascript_ExecuteGuardedAction.riskLevel}",
+                              "FinalDecision": "${$context.outputs.Javascript_ExecuteGuardedAction.finalDecision}",
+                              "Sandbox": true,
+                              "ProcessedAt": "${$context.outputs.Javascript_ExecuteGuardedAction.processedAtUtc}",
+                              "EvidenceJson": "${JSON.stringify($context.outputs.Javascript_ExecuteGuardedAction.evidence)}",
+                              "AttemptCount": 1
+                            }
+                          },
+                          "export": {
+                            "as": "{ ...$context, outputs: { ...$context?.outputs, \"CreateEntityRecordCurated_1\": $output } }"
+                          },
+                          "metadata": {
+                            "fullName": "Connector",
+                            "activityType": "Connector",
+                            "displayName": "Persist banking action",
+                            "uiPathActivityTypeId": "dfd2bc7a-ca4b-3316-8a1f-57c9e106dfbf",
+                            "assemblyQualifiedName": "Connector",
+                            "configuration": "{\"essentialConfiguration\":{\"connectorVersion\":\"\",\"executionType\":null,\"customFieldsRequestDetails\":null,\"instanceParameters\":{\"version\":\"1.0.0\",\"connectorKey\":\"uipath-uipath-dataservice\",\"activityType\":\"Curated\",\"objectName\":\"CreateEntityRecordCurated\",\"httpMethod\":\"POST\",\"operation\":null,\"eventOperation\":null,\"eventMode\":null,\"connectorObjects\":null,\"previewEndpoint\":null},\"objectName\":\"CreateEntityRecordCurated\",\"operation\":null,\"packageVersion\":\"1.0.0\",\"httpMethod\":\"POST\",\"path\":\"/v2/{entityName}/CreateEntityRecord\",\"unifiedTypesCompatible\":true,\"savedJitInputFieldId\":\"in_CreateEntityRecordCurated\"}}"
+                          }
+                        }
+                      },
+                      {
+                        "Javascript_FinalizeBankingResult": {
+                          "run": {
+                            "script": {
+                              "code": "const result=$context.outputs.Javascript_ExecuteGuardedAction;const response=$context.outputs.CreateEntityRecordCurated_1||{};const content=response.content!==undefined?response.content:response;return{...result,ledgerPersisted:true,ledgerRecordId:content.Id||content.id||'',duplicateSuppressed:false,replayed:false};",
+                              "language": "javascript",
+                              "arguments": "${{\n                        \"$context\": $context,\n                        \"$workflow\": $workflow,\n                        \"$input\": $input\n                    }}"
+                            }
+                          },
+                          "export": {
+                            "as": "{ ...$context, outputs: { ...$context?.outputs, \"Javascript_FinalizeBankingResult\": $output } }"
+                          },
+                          "metadata": {
+                            "activityType": "JsInvoke",
+                            "displayName": "Finalize durable banking result",
+                            "fullName": "JsInvoke"
+                          }
+                        }
+                      },
+                      {
+                        "Response_BankingResult": {
+                          "response": "${{ bankingResult: $context.outputs.Javascript_FinalizeBankingResult }}",
+                          "markJobAsFailed": false,
+                          "then": "end",
+                          "export": {
+                            "as": "{ ...$context, outputs: { ...$context?.outputs, \"Response_BankingResult\": $output } }"
+                          },
+                          "metadata": {
+                            "activityType": "Response",
+                            "displayName": "Return durable banking result",
+                            "fullName": "Response"
+                          }
+                        }
+                      }
+                    ],
+                    "then": "exit"
+                  }
+                }
+              ],
+              "export": {
+                "as": "{ ...$context, outputs: { ...$context?.outputs, \"If_1\": $output } }"
+              },
+              "metadata": {
+                "activityType": "If",
+                "displayName": "Replay or execute",
+                "fullName": "If"
+              }
+            }
+          }
+        ],
+        "metadata": {
+          "activityType": "Sequence",
+          "displayName": "Sequence",
+          "fullName": "Sequence"
+        }
+      }
+    }
+  ],
+  "evaluate": {
+    "mode": "strict",
+    "language": "javascript"
+  }
+}

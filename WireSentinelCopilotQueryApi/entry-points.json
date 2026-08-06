@@ -1,0 +1,49 @@
+{
+  "$schema": "https://cloud.uipath.com/draft/2024-12/entry-point",
+  "$id": "entry-points.json",
+  "entryPoints": [
+    {
+      "filePath": "content/Workflow.json",
+      "uniqueId": "e74775ed-9f3c-485a-b6a4-449115b024fb",
+      "type": "Api",
+      "input": {
+        "type": "object",
+        "required": [
+          "user_query"
+        ],
+        "properties": {
+          "user_query": {
+            "type": "string",
+            "title": "Investigation question",
+            "description": "Read-only question about WireSentinel cases, evidence, decision events, or policy."
+          },
+          "case_key": {
+            "type": "string",
+            "title": "Case key",
+            "description": "Optional exact CaseKey used to scope the lookup."
+          },
+          "max_records": {
+            "type": "integer",
+            "title": "Maximum records",
+            "description": "Maximum records per entity. Values are constrained to 1 through 25.",
+            "minimum": 1,
+            "maximum": 25,
+            "default": 10
+          }
+        },
+        "title": "Inputs"
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "queryResult": {
+            "type": "object",
+            "title": "Query result",
+            "description": "Masked, read-only operational records and stable citation identifiers."
+          }
+        },
+        "title": "Outputs"
+      }
+    }
+  ]
+}

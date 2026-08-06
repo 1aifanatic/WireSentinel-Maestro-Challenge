@@ -1,0 +1,8 @@
+{
+  "scope": "DataFabric.Schema.Read DataFabric.Data.Read OR.Tasks PIMS OR.Execution OR.Folders OR.Jobs ConversationalAgents Traces.Api",
+  "clientId": "00000000-0000-0000-0000-000000000000",
+  "orgName": "your-organization",
+  "tenantName": "your-tenant",
+  "baseUrl": "https://api.uipath.com",
+  "redirectUri": "https://cloud.uipath.com/your-organization/your-tenant/actions_"
+}

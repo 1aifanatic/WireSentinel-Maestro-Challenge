@@ -1,0 +1,6 @@
+{
+  "ProjectType": "Api",
+  "Name": "WireSentinelBankingAdapter",
+  "Description": "Deterministic sandbox banking adapter for guarded release, hold, freeze, rejection, case update, and SAR-referral actions.",
+  "MainFile": "Workflow.json"
+}

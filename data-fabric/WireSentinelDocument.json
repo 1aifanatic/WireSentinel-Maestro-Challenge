@@ -1,0 +1,90 @@
+{
+  "displayName": "WireSentinel Documents",
+  "description": "Document inventory and IXP extraction evidence for each wire-fraud case.",
+  "isRbacEnabled": true,
+  "fields": [
+    {
+      "fieldName": "DocumentKey",
+      "type": "STRING",
+      "displayName": "Document ID",
+      "isRequired": true,
+      "isUnique": true,
+      "lengthLimit": 120
+    },
+    {
+      "fieldName": "CaseKey",
+      "type": "STRING",
+      "displayName": "Case ID",
+      "isRequired": true,
+      "lengthLimit": 100
+    },
+    {
+      "fieldName": "FileName",
+      "type": "STRING",
+      "displayName": "File Name",
+      "isRequired": true,
+      "lengthLimit": 500
+    },
+    {
+      "fieldName": "MimeType",
+      "type": "STRING",
+      "displayName": "MIME Type",
+      "lengthLimit": 120
+    },
+    {
+      "fieldName": "DocumentType",
+      "type": "STRING",
+      "displayName": "IXP Document Type",
+      "isRequired": true,
+      "lengthLimit": 80
+    },
+    {
+      "fieldName": "ClassificationConfidence",
+      "type": "DECIMAL",
+      "displayName": "Classification Confidence",
+      "decimalPrecision": 4,
+      "minValue": 0,
+      "maxValue": 1
+    },
+    {
+      "fieldName": "ExtractionConfidence",
+      "type": "DECIMAL",
+      "displayName": "Extraction Confidence",
+      "decimalPrecision": 4,
+      "minValue": 0,
+      "maxValue": 1
+    },
+    {
+      "fieldName": "IsSupported",
+      "type": "BOOLEAN",
+      "displayName": "Supported Document",
+      "isRequired": true
+    },
+    {
+      "fieldName": "QuarantineReason",
+      "type": "STRING",
+      "displayName": "Quarantine Reason",
+      "lengthLimit": 1000
+    },
+    {
+      "fieldName": "ExtractedJson",
+      "type": "MULTILINE_TEXT",
+      "displayName": "Extracted Field Evidence",
+      "lengthLimit": 10000
+    },
+    {
+      "fieldName": "IxpProjectName",
+      "type": "STRING",
+      "displayName": "IXP Project",
+      "isRequired": true,
+      "lengthLimit": 200
+    },
+    {
+      "fieldName": "IxpModelTag",
+      "type": "STRING",
+      "displayName": "IXP Model Tag",
+      "isRequired": true,
+      "lengthLimit": 40
+    }
+  ]
+}

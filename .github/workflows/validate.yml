@@ -1,0 +1,88 @@
+name: Validate WireSentinel
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Test Coded Apps
+        run: npm test
+
+      - name: Build Coded Apps
+        run: npm run build
+
+      - name: Compile IXP adapter
+        run: python -m py_compile WireSentinelIxpAdapter122/main.py
+
+  uipath:
+    runs-on: ubuntu-latest
+    env:
+      # Prevent the CLI's startup synchronizer from replacing the pinned
+      # release toolchain during CI.
+      UIPATH_CLI_DISABLE_VERSION_SYNC: "1"
+      UIPATH_CLIENT_ID: ${{ secrets.UIPATH_CLIENT_ID }}
+      UIPATH_CLIENT_SECRET: ${{ secrets.UIPATH_CLIENT_SECRET }}
+      UIPATH_ORGANIZATION: ${{ vars.UIPATH_ORGANIZATION }}
+      UIPATH_TENANT: ${{ vars.UIPATH_TENANT }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install UiPath CLI
+        # Keep validation reproducible against the CLI used to build this
+        # Studio Web schema 1.8 challenge export. CLI 1.198.0 attempts an
+        # unsupported 1.8 -> 1.9 migration while packaging this Flow.
+        run: npm install --global @uipath/cli@1.197.1
+
+      - name: Validate sanitized challenge export
+        run: >
+          uip solution pack
+          ./release/WireSentinel-Challenge-1.1.17-UI-Final.uis
+          --dry-run
+          --output json
+
+      - name: Validate API Workflows
+        run: |
+          uip api-workflow validate ./WireSentinelBankingAdapter/Workflow.json --output json
+          uip api-workflow build ./WireSentinelBankingAdapter --output json
+          uip api-workflow validate ./WireSentinelCopilotQueryApi/Workflow.json --output json
+
+      - name: Validate Copilot
+        run: |
+          uip agent validate ./WireSentinelCopilot --output json
+          uip agent review ./WireSentinelCopilot --output json
+
+      - name: Authenticate for connected validation
+        if: env.UIPATH_CLIENT_ID != '' && env.UIPATH_CLIENT_SECRET != ''
+        run: >
+          uip login
+          --client-id "$UIPATH_CLIENT_ID"
+          --client-secret "$UIPATH_CLIENT_SECRET"
+          --organization "$UIPATH_ORGANIZATION"
+          --tenant "$UIPATH_TENANT"
+          --output json
+
+      # Studio Web's Coded Action App uses a `completed` HITL output handle that
+      # the standalone Flow validator does not yet declare. The strict solution
+      # pack above is therefore the release gate for this exported source.
+      - name: Validate connected solution package
+        if: env.UIPATH_CLIENT_ID != '' && env.UIPATH_CLIENT_SECRET != ''
+        run: uip solution pack . --dry-run --output json

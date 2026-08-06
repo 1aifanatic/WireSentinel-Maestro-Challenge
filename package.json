@@ -1,0 +1,26 @@
+{
+  "name": "wiresentinel-maestro-challenge",
+  "private": true,
+  "version": "1.2.3",
+  "workspaces": [
+    "WireSentinelApp",
+    "WireSentinelReviewAction/source",
+    "WireSentinelCockpitShared"
+  ],
+  "scripts": {
+    "build": "npm run build --workspace WireSentinelApp && npm run build --workspace WireSentinelReviewAction/source",
+    "build:web": "npm run build --workspace WireSentinelApp",
+    "build:action": "npm run build --workspace WireSentinelReviewAction/source",
+    "test": "vitest run --maxWorkers=1 --minWorkers=1",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@vitejs/plugin-react": "^5.0.4",
+    "jsdom": "^27.0.1",
+    "vite": "^7.3.6",
+    "vitest": "^3.2.4"
+  }
+}

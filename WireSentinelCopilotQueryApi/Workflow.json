@@ -1,0 +1,285 @@
+{
+  "document": {
+    "dsl": "1.0.0",
+    "name": "Workflow",
+    "tags": {
+      "projectId": "ac113dbd-cf36-44be-81e0-1405974f5a83"
+    },
+    "version": "1.0.0",
+    "namespace": "default",
+    "metadata": {
+      "variables": []
+    }
+  },
+  "input": {
+    "schema": {
+      "format": "json",
+      "document": {
+        "type": "object",
+        "required": [
+          "user_query"
+        ],
+        "properties": {
+          "user_query": {
+            "type": "string",
+            "title": "Investigation question",
+            "description": "Read-only question about WireSentinel cases, evidence, decision events, or policy."
+          },
+          "case_key": {
+            "type": "string",
+            "title": "Case key",
+            "description": "Optional exact CaseKey used to scope the lookup."
+          },
+          "max_records": {
+            "type": "integer",
+            "title": "Maximum records",
+            "description": "Maximum records per entity. Values are constrained to 1 through 25.",
+            "minimum": 1,
+            "maximum": 25,
+            "default": 10
+          }
+        },
+        "title": "Inputs"
+      }
+    }
+  },
+  "output": {
+    "schema": {
+      "format": "json",
+      "document": {
+        "type": "object",
+        "properties": {
+          "queryResult": {
+            "type": "object",
+            "title": "Query result",
+            "description": "Masked, read-only operational records and stable citation identifiers."
+          }
+        },
+        "title": "Outputs"
+      }
+    }
+  },
+  "do": [
+    {
+      "Sequence_1": {
+        "do": [
+          {
+            "WorkflowStart": {
+              "set": "${Object.entries($workflow.definition?.document?.metadata?.variables?.schema?.document?.properties || {}).reduce((acc, [name, def]) => ({ ...acc, [name]: def?.default }), {}) }",
+              "output": {
+                "as": "${$input}"
+              },
+              "export": {
+                "as": "{ ...$context, variables: { ...$context.variables, ...$output } }"
+              },
+              "metadata": {
+                "activityType": "Assign",
+                "displayName": "Workflow start",
+                "fullName": "Assign",
+                "isTransparent": true
+              }
+            }
+          },
+          {
+            "Javascript_PrepareRead": {
+              "run": {
+                "script": {
+                  "code": "const userQuery=String($workflow.input.user_query||'').trim();if(!userQuery)throw new Error('user_query is required');const caseKey=String($workflow.input.case_key||'').trim();const requested=Number($workflow.input.max_records||10);const maxRecords=Math.min(25,Math.max(1,Number.isFinite(requested)?Math.floor(requested):10));const escapeOData=(value)=>String(value).replace(/'/g,\"''\");return{userQuery:userQuery,caseKey:caseKey,maxRecords:maxRecords,caseFilter:caseKey?\"CaseKey='\"+escapeOData(caseKey)+\"'\":\"\"};",
+                  "language": "javascript",
+                  "arguments": "${{\n                        \"$context\": $context,\n                        \"$workflow\": $workflow,\n                        \"$input\": $input\n                    }}"
+                }
+              },
+              "export": {
+                "as": "{ ...$context, outputs: { ...$context?.outputs, \"Javascript_PrepareRead\": $output } }"
+              },
+              "metadata": {
+                "activityType": "JsInvoke",
+                "displayName": "Prepare bounded read-only query",
+                "fullName": "JsInvoke"
+              }
+            }
+          },
+          {
+            "QueryCases": {
+              "call": "UiPath.IntSvc",
+              "with": {
+                "connector": "uipath-uipath-dataservice",
+                "connectionId": "33333333-3333-4333-8333-333333333333",
+                "connectionResourceId": "33333333-3333-4333-8333-333333333333",
+                "method": "POST",
+                "endpoint": "/v2/{entityName}/qer",
+                "queryParameters": {
+                  "queryExpression": "${$context.outputs.Javascript_PrepareRead.caseFilter}",
+                  "start": 0,
+                  "limit": "${$context.outputs.Javascript_PrepareRead.maxRecords}",
+                  "expansionLevel": 1,
+                  "isAscending": false
+                },
+                "pathParameters": {
+                  "entityName": "WireSentinelCase"
+                },
+                "bodyParameters": {}
+              },
+              "export": {
+                "as": "{ ...$context, outputs: { ...$context?.outputs, \"QueryCases\": $output } }"
+              },
+              "metadata": {
+                "fullName": "Connector",
+                "activityType": "Connector",
+                "displayName": "Read operational cases",
+                "uiPathActivityTypeId": "703065b9-a310-33b8-9d4d-12df0a6f520b",
+                "assemblyQualifiedName": "Connector",
+                "configuration": "{\"essentialConfiguration\":{\"connectorVersion\":\"\",\"executionType\":null,\"customFieldsRequestDetails\":null,\"instanceParameters\":{\"version\":\"1.0.0\",\"connectorKey\":\"uipath-uipath-dataservice\",\"activityType\":\"Curated\",\"objectName\":\"QueryEntityRecordsCurated\",\"httpMethod\":\"POST\",\"operation\":null,\"eventOperation\":null,\"eventMode\":null,\"connectorObjects\":null,\"previewEndpoint\":null},\"objectName\":\"QueryEntityRecordsCurated\",\"operation\":null,\"packageVersion\":\"1.0.0\",\"httpMethod\":\"POST\",\"path\":\"/v2/{entityName}/qer\",\"unifiedTypesCompatible\":true,\"savedJitInputFieldId\":\"in_QueryEntityRecordsCurated\"}}"
+              }
+            }
+          },
+          {
+            "QueryAuditEvents": {
+              "call": "UiPath.IntSvc",
+              "with": {
+                "connector": "uipath-uipath-dataservice",
+                "connectionId": "33333333-3333-4333-8333-333333333333",
+                "connectionResourceId": "33333333-3333-4333-8333-333333333333",
+                "method": "POST",
+                "endpoint": "/v2/{entityName}/qer",
+                "queryParameters": {
+                  "queryExpression": "${$context.outputs.Javascript_PrepareRead.caseFilter}",
+                  "start": 0,
+                  "limit": "${$context.outputs.Javascript_PrepareRead.maxRecords}",
+                  "expansionLevel": 1,
+                  "isAscending": false
+                },
+                "pathParameters": {
+                  "entityName": "WireSentinelAuditEvent"
+                },
+                "bodyParameters": {}
+              },
+              "export": {
+                "as": "{ ...$context, outputs: { ...$context?.outputs, \"QueryAuditEvents\": $output } }"
+              },
+              "metadata": {
+                "fullName": "Connector",
+                "activityType": "Connector",
+                "displayName": "Read decision audit events",
+                "uiPathActivityTypeId": "703065b9-a310-33b8-9d4d-12df0a6f520b",
+                "assemblyQualifiedName": "Connector",
+                "configuration": "{\"essentialConfiguration\":{\"connectorVersion\":\"\",\"executionType\":null,\"customFieldsRequestDetails\":null,\"instanceParameters\":{\"version\":\"1.0.0\",\"connectorKey\":\"uipath-uipath-dataservice\",\"activityType\":\"Curated\",\"objectName\":\"QueryEntityRecordsCurated\",\"httpMethod\":\"POST\",\"operation\":null,\"eventOperation\":null,\"eventMode\":null,\"connectorObjects\":null,\"previewEndpoint\":null},\"objectName\":\"QueryEntityRecordsCurated\",\"operation\":null,\"packageVersion\":\"1.0.0\",\"httpMethod\":\"POST\",\"path\":\"/v2/{entityName}/qer\",\"unifiedTypesCompatible\":true,\"savedJitInputFieldId\":\"in_QueryEntityRecordsCurated\"}}"
+              }
+            }
+          },
+          {
+            "QueryDocuments": {
+              "call": "UiPath.IntSvc",
+              "with": {
+                "connector": "uipath-uipath-dataservice",
+                "connectionId": "33333333-3333-4333-8333-333333333333",
+                "connectionResourceId": "33333333-3333-4333-8333-333333333333",
+                "method": "POST",
+                "endpoint": "/v2/{entityName}/qer",
+                "queryParameters": {
+                  "queryExpression": "${$context.outputs.Javascript_PrepareRead.caseFilter}",
+                  "start": 0,
+                  "limit": "${$context.outputs.Javascript_PrepareRead.maxRecords}",
+                  "expansionLevel": 1,
+                  "isAscending": false
+                },
+                "pathParameters": {
+                  "entityName": "WireSentinelDocument"
+                },
+                "bodyParameters": {}
+              },
+              "export": {
+                "as": "{ ...$context, outputs: { ...$context?.outputs, \"QueryDocuments\": $output } }"
+              },
+              "metadata": {
+                "fullName": "Connector",
+                "activityType": "Connector",
+                "displayName": "Read IXP document evidence",
+                "uiPathActivityTypeId": "703065b9-a310-33b8-9d4d-12df0a6f520b",
+                "assemblyQualifiedName": "Connector",
+                "configuration": "{\"essentialConfiguration\":{\"connectorVersion\":\"\",\"executionType\":null,\"customFieldsRequestDetails\":null,\"instanceParameters\":{\"version\":\"1.0.0\",\"connectorKey\":\"uipath-uipath-dataservice\",\"activityType\":\"Curated\",\"objectName\":\"QueryEntityRecordsCurated\",\"httpMethod\":\"POST\",\"operation\":null,\"eventOperation\":null,\"eventMode\":null,\"connectorObjects\":null,\"previewEndpoint\":null},\"objectName\":\"QueryEntityRecordsCurated\",\"operation\":null,\"packageVersion\":\"1.0.0\",\"httpMethod\":\"POST\",\"path\":\"/v2/{entityName}/qer\",\"unifiedTypesCompatible\":true,\"savedJitInputFieldId\":\"in_QueryEntityRecordsCurated\"}}"
+              }
+            }
+          },
+          {
+            "QueryPolicies": {
+              "call": "UiPath.IntSvc",
+              "with": {
+                "connector": "uipath-uipath-dataservice",
+                "connectionId": "33333333-3333-4333-8333-333333333333",
+                "connectionResourceId": "33333333-3333-4333-8333-333333333333",
+                "method": "POST",
+                "endpoint": "/v2/{entityName}/qer",
+                "queryParameters": {
+                  "queryExpression": "",
+                  "start": 0,
+                  "limit": 25,
+                  "expansionLevel": 1,
+                  "isAscending": true
+                },
+                "pathParameters": {
+                  "entityName": "WireSentinelPolicySection"
+                },
+                "bodyParameters": {}
+              },
+              "export": {
+                "as": "{ ...$context, outputs: { ...$context?.outputs, \"QueryPolicies\": $output } }"
+              },
+              "metadata": {
+                "fullName": "Connector",
+                "activityType": "Connector",
+                "displayName": "Read policy sections",
+                "uiPathActivityTypeId": "703065b9-a310-33b8-9d4d-12df0a6f520b",
+                "assemblyQualifiedName": "Connector",
+                "configuration": "{\"essentialConfiguration\":{\"connectorVersion\":\"\",\"executionType\":null,\"customFieldsRequestDetails\":null,\"instanceParameters\":{\"version\":\"1.0.0\",\"connectorKey\":\"uipath-uipath-dataservice\",\"activityType\":\"Curated\",\"objectName\":\"QueryEntityRecordsCurated\",\"httpMethod\":\"POST\",\"operation\":null,\"eventOperation\":null,\"eventMode\":null,\"connectorObjects\":null,\"previewEndpoint\":null},\"objectName\":\"QueryEntityRecordsCurated\",\"operation\":null,\"packageVersion\":\"1.0.0\",\"httpMethod\":\"POST\",\"path\":\"/v2/{entityName}/qer\",\"unifiedTypesCompatible\":true,\"savedJitInputFieldId\":\"in_QueryEntityRecordsCurated\"}}"
+              }
+            }
+          },
+          {
+            "Javascript_BuildMaskedResult": {
+              "run": {
+                "script": {
+                  "code": "function records(name){const response=$context.outputs[name]||{};const raw=response.content!==undefined?response.content:response;return Array.isArray(raw)?raw:(Array.isArray(raw.Items)?raw.Items:(Array.isArray(raw.items)?raw.items:(Array.isArray(raw.value)?raw.value:(Array.isArray(raw.Value)?raw.Value:(Array.isArray(raw.records)?raw.records:[])))))}const prep=$context.outputs.Javascript_PrepareRead;const cases=records('QueryCases').map(r=>({CaseKey:r.CaseKey,RequestId:r.RequestId,Status:r.Status,RiskLevel:r.RiskLevel,RiskScore:r.RiskScore,Amount:r.Amount,Currency:r.Currency,BeneficiaryCountry:r.BeneficiaryCountry,FinalDecision:r.FinalDecision,LastAction:r.LastAction,PolicyEvidence:r.PolicyEvidence,CreateTime:r.CreateTime,UpdateTime:r.UpdateTime}));const auditEvents=records('QueryAuditEvents').map(r=>({EventKey:r.EventKey,CaseKey:r.CaseKey,EventType:r.EventType,ActorType:r.ActorType,Outcome:r.Outcome,Summary:r.Summary||r.Description,OccurredAt:r.OccurredAt||r.EventTime||r.CreateTime}));const documents=records('QueryDocuments').map(r=>({DocumentKey:r.DocumentKey,CaseKey:r.CaseKey,DocumentType:r.DocumentType,SourceDocumentId:r.SourceDocumentId,ModelVersion:r.ModelVersion,ExtractionConfidence:r.ExtractionConfidence,ValidationStatus:r.ValidationStatus,IsValid:r.IsValid,CreateTime:r.CreateTime}));const policies=records('QueryPolicies').map(r=>({PolicyKey:r.PolicyKey,PolicyTitle:r.PolicyTitle,SectionName:r.SectionName,PolicyContent:r.PolicyContent,PolicyVersion:r.PolicyVersion,EffectiveDate:r.EffectiveDate}));const citations=[...cases.map(r=>r.CaseKey),...auditEvents.map(r=>r.EventKey),...documents.map(r=>r.DocumentKey),...policies.map(r=>r.PolicyKey)].filter(Boolean);return{success:true,readOnly:true,masked:true,source:'Operational UiPath Data Fabric',userQuery:prep.userQuery,caseKeyFilter:prep.caseKey||null,recordCounts:{cases:cases.length,auditEvents:auditEvents.length,documents:documents.length,policies:policies.length},cases:cases,auditEvents:auditEvents,documents:documents,policies:policies,citations:Array.from(new Set(citations)),safety:{writesPerformed:false,omittedFields:['CustomerId','BeneficiaryName','Actor','FileName','raw extraction payloads']}};",
+                  "language": "javascript",
+                  "arguments": "${{\n                        \"$context\": $context,\n                        \"$workflow\": $workflow,\n                        \"$input\": $input\n                    }}"
+                }
+              },
+              "export": {
+                "as": "{ ...$context, outputs: { ...$context?.outputs, \"Javascript_BuildMaskedResult\": $output } }"
+              },
+              "metadata": {
+                "activityType": "JsInvoke",
+                "displayName": "Build masked cited response",
+                "fullName": "JsInvoke"
+              }
+            }
+          },
+          {
+            "Response_QueryResult": {
+              "response": "${{ queryResult: $context.outputs.Javascript_BuildMaskedResult }}",
+              "markJobAsFailed": false,
+              "then": "end",
+              "export": {
+                "as": "{ ...$context, outputs: { ...$context?.outputs, \"Response_QueryResult\": $output } }"
+              },
+              "metadata": {
+                "activityType": "Response",
+                "displayName": "Return masked operational records",
+                "fullName": "Response"
+              }
+            }
+          }
+        ],
+        "metadata": {
+          "activityType": "Sequence",
+          "displayName": "Sequence",
+          "fullName": "Sequence"
+        }
+      }
+    }
+  ],
+  "evaluate": {
+    "mode": "strict",
+    "language": "javascript"
+  }
+}

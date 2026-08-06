@@ -1,0 +1,24 @@
+{
+  "version": "2.0",
+  "resources": [
+    {
+      "resource": "ixp",
+      "key": "WireSentinel Documents",
+      "value": {
+        "name": {
+          "defaultValue": "WireSentinel Documents",
+          "isExpression": false,
+          "displayName": "IXP project name"
+        },
+        "version": {
+          "defaultValue": "live",
+          "isExpression": false,
+          "displayName": "IXP project version"
+        }
+      },
+      "metadata": {
+        "bindingsVersion": "2.2"
+      }
+    }
+  ]
+}

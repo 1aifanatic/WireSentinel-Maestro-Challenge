@@ -1,0 +1,41 @@
+{
+  "$schema": "https://cloud.uipath.com/draft/2024-12/entry-point",
+  "$id": "entry-points.json",
+  "entryPoints": [
+    {
+      "filePath": "content/WireSentinelFlow.bpmn#wireRequestReceived1",
+      "uniqueId": "0af1e5e3-c4cf-42de-9c0d-845990ab6066",
+      "type": "processorchestration",
+      "input": {
+        "type": "object",
+        "properties": {}
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "final_status": {
+            "type": "string",
+            "title": "final_status"
+          },
+          "risk_level": {
+            "type": "string",
+            "title": "risk_level"
+          },
+          "decision": {
+            "type": "string",
+            "title": "decision"
+          },
+          "case_id": {
+            "type": "string",
+            "title": "case_id"
+          },
+          "audit_record": {
+            "type": "object",
+            "title": "audit_record"
+          }
+        }
+      },
+      "displayName": "Wire Request Received"
+    }
+  ]
+}

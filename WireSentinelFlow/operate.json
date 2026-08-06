@@ -1,0 +1,11 @@
+{
+  "$schema": "https://cloud.uipath.com/draft/2024-12/operate",
+  "projectId": "94eaad37-78e9-4f06-a8e8-ee0340027083",
+  "main": "content/WireSentinelFlow.bpmn#wireRequestReceived1",
+  "contentType": "Flow",
+  "targetFramework": "Portable",
+  "runtimeOptions": {
+    "requiresUserInteraction": false,
+    "isAttended": false
+  }
+}

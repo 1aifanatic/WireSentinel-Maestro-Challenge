@@ -1,0 +1,26 @@
+{
+  "name": "wiresentinel-operations-console",
+  "private": true,
+  "version": "1.2.3",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@wiresentinel/cockpit-ui": "1.2.3",
+    "@uipath/uipath-typescript": "^1.5.5",
+    "path-browserify": "^1.0.1",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "@types/react": "^19.1.10",
+    "@types/react-dom": "^19.1.7",
+    "@vitejs/plugin-react": "^5.0.2",
+    "typescript": "~5.8.3",
+    "vite": "^7.1.3"
+  }
+}

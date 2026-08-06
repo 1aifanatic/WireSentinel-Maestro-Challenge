@@ -1,0 +1,16 @@
+{
+  "version": "1.0",
+  "id": "risklevelmatch-b86ef2a4",
+  "name": "RiskLevelMatch",
+  "description": "Flow's final risk_level equals expected",
+  "evaluatorTypeId": "uipath-exact-match",
+  "evaluatorConfig": {
+    "name": "RiskLevelMatch",
+    "caseSensitive": false,
+    "negated": false,
+    "targetOutputKey": "risk_level"
+  },
+  "fileName": "risklevelmatch-b86ef2a4.json",
+  "createdAt": "2026-06-02T23:04:27.076Z",
+  "updatedAt": "2026-06-02T23:04:27.076Z"
+}

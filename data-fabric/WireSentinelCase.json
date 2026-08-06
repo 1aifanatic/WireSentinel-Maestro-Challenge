@@ -1,0 +1,128 @@
+{
+  "displayName": "WireSentinel Cases",
+  "description": "Authoritative lifecycle state for agentic wire-fraud investigations orchestrated by Maestro.",
+  "isRbacEnabled": true,
+  "fields": [
+    {
+      "fieldName": "CaseKey",
+      "type": "STRING",
+      "displayName": "Case ID",
+      "description": "Stable business case identifier.",
+      "isRequired": true,
+      "isUnique": true,
+      "lengthLimit": 100
+    },
+    {
+      "fieldName": "RequestId",
+      "type": "STRING",
+      "displayName": "Wire Request ID",
+      "isRequired": true,
+      "lengthLimit": 100
+    },
+    {
+      "fieldName": "CustomerId",
+      "type": "STRING",
+      "displayName": "Customer ID",
+      "isRequired": true,
+      "lengthLimit": 100
+    },
+    {
+      "fieldName": "Status",
+      "type": "STRING",
+      "displayName": "Case Status",
+      "isRequired": true,
+      "lengthLimit": 80
+    },
+    {
+      "fieldName": "RiskLevel",
+      "type": "STRING",
+      "displayName": "Risk Level",
+      "isRequired": true,
+      "lengthLimit": 40
+    },
+    {
+      "fieldName": "RiskScore",
+      "type": "INTEGER",
+      "displayName": "Risk Score",
+      "minValue": 0,
+      "maxValue": 100
+    },
+    {
+      "fieldName": "Amount",
+      "type": "DECIMAL",
+      "displayName": "Wire Amount",
+      "isRequired": true,
+      "decimalPrecision": 2,
+      "minValue": 0,
+      "maxValue": 999999999999
+    },
+    {
+      "fieldName": "Currency",
+      "type": "STRING",
+      "displayName": "Currency",
+      "isRequired": true,
+      "lengthLimit": 10
+    },
+    {
+      "fieldName": "BeneficiaryName",
+      "type": "STRING",
+      "displayName": "Beneficiary",
+      "isRequired": true,
+      "lengthLimit": 300
+    },
+    {
+      "fieldName": "BeneficiaryCountry",
+      "type": "STRING",
+      "displayName": "Beneficiary Country",
+      "lengthLimit": 120
+    },
+    {
+      "fieldName": "FinalDecision",
+      "type": "STRING",
+      "displayName": "Final Decision",
+      "lengthLimit": 120
+    },
+    {
+      "fieldName": "SourceMessageId",
+      "type": "STRING",
+      "displayName": "Source Message ID",
+      "lengthLimit": 300
+    },
+    {
+      "fieldName": "SourceSubject",
+      "type": "STRING",
+      "displayName": "Source Subject",
+      "lengthLimit": 500
+    },
+    {
+      "fieldName": "ExtractorEvidence",
+      "type": "MULTILINE_TEXT",
+      "displayName": "IXP Evidence",
+      "lengthLimit": 10000
+    },
+    {
+      "fieldName": "PolicyEvidence",
+      "type": "MULTILINE_TEXT",
+      "displayName": "Policy Evidence",
+      "lengthLimit": 10000
+    },
+    {
+      "fieldName": "LastAction",
+      "type": "STRING",
+      "displayName": "Last Banking Action",
+      "lengthLimit": 200
+    },
+    {
+      "fieldName": "ExternalActionsEnabled",
+      "type": "BOOLEAN",
+      "displayName": "External Actions Enabled",
+      "isRequired": true,
+      "defaultValue": "true"
+    },
+    {
+      "fieldName": "ClosedAt",
+      "type": "DATETIME_WITH_TZ",
+      "displayName": "Closed At"
+    }
+  ]
+}

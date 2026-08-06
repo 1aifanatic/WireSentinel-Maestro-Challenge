@@ -1,0 +1,56 @@
+# Dependencies and build output
+node_modules/
+dist/
+out/
+coverage/
+*.tsbuildinfo
+*.nupkg
+*.zip
+__pycache__/
+*.pyc
+
+# Local UiPath state and generated metadata
+.uipath/
+.agent/
+.agent-builder/
+.claude/
+userProfile/
+# Generated solution resources can contain tenant-specific bindings.
+resources/
+local-output.json
+*.flow.resolved
+
+# Environment and credentials
+.env
+.env.*
+!.env.example
+*secret*.json
+*credentials*.json
+deployment-config*.json
+
+# Logs, caches, and editor files
+*.log
+*.err
+*.out
+.cache/
+.tmp/
+tmp/
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Keep only the curated final challenge export
+release/*.uis
+!release/WireSentinel-Challenge-1.1.17-UI-Final.uis
+
+# Local learning-workspace and presentation-source artifacts
+MISSION.md
+NOTES.md
+RESOURCES.md
+assets/course.css
+assets/quiz.js
+lessons/
+reference/
+deliverables/
+docs/WIRESENTINEL-E2E-DEMO-CLICK-BY-CLICK.md

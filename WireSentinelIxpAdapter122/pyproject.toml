@@ -1,0 +1,12 @@
+[project]
+name = "WireSentinelIxpAdapter122"
+version = "0.1.1"
+description = "Deterministic UiPath IXP runtime adapter for WireSentinel."
+authors = [{ name = "WireSentinel Demo Team", email = "demo.reviewer@example.com" }]
+requires-python = ">=3.11,<3.14"
+dependencies = [
+    "uipath>=2.13.18,<3.0.0"
+]
+
+[tool.uipath]
+type = "function"

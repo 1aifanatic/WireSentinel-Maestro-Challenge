@@ -1,0 +1,54 @@
+{
+  "$schema": "https://cloud.uipath.com/draft/2024-12/entry-point",
+  "$id": "entry-points.json",
+  "entryPoints": [
+    {
+      "filePath": "content/Workflow.json",
+      "uniqueId": "b9914235-8814-4c73-b746-d19ff53f0f12",
+      "type": "Api",
+      "input": {
+        "type": "object",
+        "required": [
+          "casePackage",
+          "action",
+          "actor",
+          "correlationId"
+        ],
+        "properties": {
+          "casePackage": {
+            "type": "string",
+            "title": "Case package",
+            "description": "JSON string containing the normalized wire, deterministic risk result, and completed HITL decision."
+          },
+          "action": {
+            "type": "string",
+            "title": "Requested action",
+            "description": "One of updateCase, release, hold, freeze, reject, fileSAR, or holdAndFileSAR."
+          },
+          "actor": {
+            "type": "string",
+            "title": "Actor",
+            "description": "Human or system identity requesting the banking action."
+          },
+          "correlationId": {
+            "type": "string",
+            "title": "Correlation ID",
+            "description": "Idempotency and trace identifier."
+          }
+        },
+        "title": "Inputs"
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "bankingResult": {
+            "type": "object",
+            "title": "Banking result",
+            "description": "Guarded, deterministic sandbox action result with audit evidence."
+          }
+        },
+        "title": "Outputs"
+      }
+    }
+  ]
+}

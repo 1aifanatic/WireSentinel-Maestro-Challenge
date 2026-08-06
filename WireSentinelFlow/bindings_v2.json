@@ -1,0 +1,182 @@
+{
+  "version": "2.0",
+  "resources": [
+    {
+      "resource": "process",
+      "key": "9263a8b5-0f0a-4574-920f-07326795f747",
+      "id": "process9263a8b5-0f0a-4574-920f-07326795f747",
+      "value": {
+        "folderPath": {
+          "defaultValue": "Shared/WireSentinel",
+          "isExpression": false,
+          "displayName": "Folder path"
+        },
+        "name": {
+          "defaultValue": "WireSentinelIxpAdapter122",
+          "isExpression": false,
+          "displayName": "Process name"
+        }
+      },
+      "metadata": {
+        "ActivityName": "WireSentinel IXP Adapter",
+        "BindingsVersion": "2.2",
+        "DisplayLabel": "name",
+        "SolutionsSupport": "true",
+        "subType": "Function"
+      }
+    },
+    {
+      "resource": "connection",
+      "key": "11111111-1111-4111-8111-111111111111",
+      "id": "connection11111111-1111-4111-8111-111111111111",
+      "value": {
+        "ConnectionId": {
+          "defaultValue": "11111111-1111-4111-8111-111111111111",
+          "isExpression": false,
+          "displayName": "uipath-google-gmail connection"
+        }
+      },
+      "metadata": {
+        "ActivityName": "Wire Request Received",
+        "BindingsVersion": "2.2",
+        "DisplayLabel": "uipath-google-gmail connection",
+        "UseConnectionService": "true",
+        "Connector": "uipath-google-gmail"
+      }
+    },
+    {
+      "resource": "connection",
+      "key": "22222222-2222-4222-8222-222222222222",
+      "id": "connection22222222-2222-4222-8222-222222222222",
+      "value": {
+        "ConnectionId": {
+          "defaultValue": "22222222-2222-4222-8222-222222222222",
+          "isExpression": false,
+          "displayName": "uipath-google-sheets connection"
+        }
+      },
+      "metadata": {
+        "ActivityName": "Read Customers",
+        "BindingsVersion": "2.2",
+        "DisplayLabel": "uipath-google-sheets connection",
+        "UseConnectionService": "true",
+        "Connector": "uipath-google-sheets"
+      }
+    },
+    {
+      "resource": "connection",
+      "key": "33333333-3333-4333-8333-333333333333",
+      "id": "connection33333333-3333-4333-8333-333333333333",
+      "value": {
+        "ConnectionId": {
+          "defaultValue": "33333333-3333-4333-8333-333333333333",
+          "isExpression": false,
+          "displayName": "uipath-uipath-dataservice connection"
+        }
+      },
+      "metadata": {
+        "ActivityName": "Create Wire Case",
+        "BindingsVersion": "2.2",
+        "DisplayLabel": "uipath-uipath-dataservice connection",
+        "UseConnectionService": "true",
+        "Connector": "uipath-uipath-dataservice"
+      }
+    },
+    {
+      "resource": "process",
+      "key": "bf773dd6-20cb-4ff8-b39a-371edc303349",
+      "id": "processbf773dd6-20cb-4ff8-b39a-371edc303349",
+      "value": {
+        "folderPath": {
+          "defaultValue": "Shared/WireSentinel",
+          "isExpression": false,
+          "displayName": "Folder path"
+        },
+        "name": {
+          "defaultValue": "WireSentinelBankingAdapter",
+          "isExpression": false,
+          "displayName": "Process name"
+        }
+      },
+      "metadata": {
+        "ActivityName": "Guarded Sandbox Banking Adapter",
+        "BindingsVersion": "2.2",
+        "DisplayLabel": "name",
+        "SolutionsSupport": "true",
+        "subType": "Api"
+      }
+    },
+    {
+      "resource": "process",
+      "key": "Shared/WireSentinel.WireSentinelAttachmentAdapter",
+      "id": "processShared/WireSentinel.WireSentinelAttachmentAdapter",
+      "value": {
+        "folderKey": {
+          "defaultValue": "44444444-4444-4444-8444-444444444444",
+          "isExpression": false,
+          "displayName": "Folder key"
+        },
+        "folderPath": {
+          "defaultValue": "Shared/WireSentinel",
+          "isExpression": false,
+          "displayName": "Folder path"
+        },
+        "name": {
+          "defaultValue": "WireSentinelAttachmentAdapter",
+          "isExpression": false,
+          "displayName": "Process name"
+        }
+      },
+      "metadata": {
+        "ActivityName": "Materialize Wire Attachment",
+        "BindingsVersion": "2.2",
+        "DisplayLabel": "name",
+        "SolutionsSupport": "true",
+        "subType": "Process"
+      }
+    },
+    {
+      "resource": "EventTrigger",
+      "key": "11111111-1111-4111-8111-111111111111_wireRequestReceived1",
+      "id": "EventTrigger11111111-1111-4111-8111-111111111111_wireRequestReceived1",
+      "value": {
+        "ConnectionId": {
+          "defaultValue": "11111111-1111-4111-8111-111111111111",
+          "isExpression": false
+        },
+        "EntryPointUniqueId": {
+          "defaultValue": "0af1e5e3-c4cf-42de-9c0d-845990ab6066",
+          "isExpression": false
+        }
+      },
+      "metadata": {
+        "UseConnectionService": "true",
+        "Connector": "uipath-google-gmail",
+        "ActivityName": "Wire Request Received",
+        "BindingsVersion": "2.2",
+        "ObjectName": "Message",
+        "Operation": "EMAIL_RECEIVED",
+        "FilterExpression": "(ParentFolders[?ID=='INBOX']) && ((HasAttachments==`true`))"
+      }
+    },
+    {
+      "resource": "Property",
+      "key": "EMAIL_RECEIVED",
+      "id": "Property_wireRequestReceived1",
+      "value": {
+        "ParentFolders[*].ID": {
+          "defaultValue": "INBOX",
+          "isExpression": false
+        }
+      },
+      "metadata": {
+        "TriggerCreateParameters": "ParentFolders[*].ID",
+        "DebugQueryParameters": "ParentFolders[*].ID",
+        "ActivityName": "Wire Request Received",
+        "BindingsVersion": "2.2",
+        "ObjectName": "Message",
+        "ParentResourceKey": "EventTrigger.11111111-1111-4111-8111-111111111111_wireRequestReceived1"
+      }
+    }
+  ]
+}

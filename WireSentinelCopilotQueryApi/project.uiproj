@@ -1,0 +1,6 @@
+{
+  "ProjectType": "Api",
+  "Name": "WireSentinelCopilotQueryApi",
+  "Description": "Least-privilege read-only query adapter for operational WireSentinel Data Fabric records used by the conversational Copilot.",
+  "MainFile": "Workflow.json"
+}

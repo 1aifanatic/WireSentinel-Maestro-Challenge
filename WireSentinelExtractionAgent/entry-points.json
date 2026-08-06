@@ -1,0 +1,73 @@
+{
+  "$schema": "https://cloud.uipath.com/draft/2024-12/entry-point",
+  "$id": "entry-points.json",
+  "entryPoints": [
+    {
+      "filePath": "/content/agent.json",
+      "uniqueId": "7d130146-9281-49ec-9df6-7fa1b011b48c",
+      "type": "agent",
+      "input": {
+        "type": "object",
+        "required": [
+          "wire_file"
+        ],
+        "properties": {
+          "wire_file": {
+            "$ref": "#/definitions/job-attachment",
+            "description": "Wire instruction document to classify and extract."
+          },
+          "supporting_file": {
+            "$ref": "#/definitions/job-attachment",
+            "description": "Optional supporting invoice to classify and extract."
+          },
+          "email_context": {
+            "type": "object",
+            "description": "Bounded source-email metadata used only for correlation."
+          }
+        },
+        "definitions": {
+          "job-attachment": {
+            "type": "object",
+            "required": [
+              "ID"
+            ],
+            "x-uipath-resource-kind": "JobAttachment",
+            "properties": {
+              "ID": {
+                "type": "string",
+                "description": "Orchestrator attachment key"
+              },
+              "FullName": {
+                "type": "string",
+                "description": "File name"
+              },
+              "MimeType": {
+                "type": "string",
+                "description": "MIME type"
+              },
+              "Metadata": {
+                "type": "object",
+                "description": "Attachment metadata",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "output": {
+        "type": "object",
+        "required": [
+          "content"
+        ],
+        "properties": {
+          "content": {
+            "type": "string",
+            "description": "Strict JSON IXP evidence pack."
+          }
+        }
+      }
+    }
+  ]
+}

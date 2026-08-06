@@ -1,0 +1,16 @@
+{
+  "version": "1.0",
+  "id": "finalstatuscontains-e49015e5",
+  "name": "FinalStatusContains",
+  "description": "Final status contains expected keyword",
+  "evaluatorTypeId": "uipath-contains",
+  "evaluatorConfig": {
+    "name": "FinalStatusContains",
+    "caseSensitive": false,
+    "negated": false,
+    "targetOutputKey": "final_status"
+  },
+  "fileName": "finalstatuscontains-e49015e5.json",
+  "createdAt": "2026-06-02T23:04:29.393Z",
+  "updatedAt": "2026-06-02T23:04:29.393Z"
+}

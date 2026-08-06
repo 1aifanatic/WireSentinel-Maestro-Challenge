@@ -1,0 +1,10 @@
+{
+  "ProjectType": "AppV2",
+  "WebAppSettings": {
+    "AppId": null,
+    "IsCoreProject": false
+  },
+  "Name": "WireSentinelReviewAction",
+  "Description": "Unified WireSentinel Coded Action App for Maestro human review.",
+  "MainFile": null
+}

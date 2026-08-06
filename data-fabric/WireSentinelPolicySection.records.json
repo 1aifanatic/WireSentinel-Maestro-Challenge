@@ -1,0 +1,47 @@
+[
+  {
+    "PolicyKey": "WS-POLICY-WIRE-OPERATIONS",
+    "PolicyTitle": "Wire Operations Policy",
+    "SectionName": "Risk routing and execution controls",
+    "PolicyContent": "WireSentinel uses deterministic routing. Low risk may be released straight through only when all required fields are present, documents are supported, confidence gates pass, and there is no sanctions or watchlist hit. Medium risk requires customer verification. High risk requires manager approval. Critical risk requires Compliance review. Freeze and SAR referral are never autonomous. A sanctions or watchlist match, unsupported primary document, missing required field, or document mismatch is a hard stop that overrides any agent recommendation.",
+    "PolicyVersion": "1.0",
+    "EffectiveDate": "2026-07-28",
+    "SourcePath": "policies/wire-operations-policy.md"
+  },
+  {
+    "PolicyKey": "WS-POLICY-APPROVAL-MATRIX",
+    "PolicyTitle": "Wire Approval Matrix",
+    "SectionName": "Authority and segregation of duties",
+    "PolicyContent": "Customer Verification may confirm or dispute a Medium-risk payment but cannot override sanctions or missing-document hard stops. Managers may Approve, Hold, or Reject High-risk payments. Compliance may Release, Hold and File SAR, or Reject Critical-risk payments. The banking adapter must reject calls that are inconsistent with the completed Action Center decision. The initiating automation and the human decision maker are recorded separately in the audit trail.",
+    "PolicyVersion": "1.0",
+    "EffectiveDate": "2026-07-28",
+    "SourcePath": "policies/approval-matrix.md"
+  },
+  {
+    "PolicyKey": "WS-POLICY-SANCTIONS",
+    "PolicyTitle": "Sanctions and Watchlist Procedure",
+    "SectionName": "Hard-stop screening",
+    "PolicyContent": "Any positive sanctions or watchlist match sets risk to Critical, prevents release, and requires Compliance review. The review package must include the matching party, list source, match strength, beneficiary country, payment amount, supporting-document evidence, and the deterministic reason codes. A freeze or SAR referral requires an explicit completed Compliance decision of HoldAndFileSAR.",
+    "PolicyVersion": "1.0",
+    "EffectiveDate": "2026-07-28",
+    "SourcePath": "policies/sanctions-and-watchlist-procedure.md"
+  },
+  {
+    "PolicyKey": "WS-POLICY-DOCUMENT-VALIDATION",
+    "PolicyTitle": "Document Validation Guide",
+    "SectionName": "IXP intake controls",
+    "PolicyContent": "Every bounded intake must contain exactly one wire instruction and may contain supporting invoices. Each attachment is classified by the published WireSentinel Documents IXP model. Unsupported documents are quarantined and cannot act as the primary wire instruction. Required wire fields are Request ID, Customer ID, Debit Account, Amount, Beneficiary, Beneficiary Country, Routing or SWIFT, Purpose, Requested Execution Date, Authorized Approver, and Signature Present. Invoice-to-wire mismatches and confidence failures are routed to human review.",
+    "PolicyVersion": "1.0",
+    "EffectiveDate": "2026-07-28",
+    "SourcePath": "policies/document-validation-guide.md"
+  },
+  {
+    "PolicyKey": "WS-POLICY-INCIDENT-RUNBOOK",
+    "PolicyTitle": "Wire Incident Runbook",
+    "SectionName": "Technical and business exception handling",
+    "PolicyContent": "Technical failures are isolated from business risk. Connector, IXP, agent, Data Fabric, and banking-adapter failures create a TechnicalFailure outcome with correlation evidence; they must never be interpreted as a low-risk payment. The runbook requires retry-safe idempotency keys, preserved job and action identifiers, an append-only audit event, and manual recovery instructions. No production funds movement occurs in the challenge sandbox.",
+    "PolicyVersion": "1.0",
+    "EffectiveDate": "2026-07-28",
+    "SourcePath": "policies/incident-runbook.md"
+  }
+]

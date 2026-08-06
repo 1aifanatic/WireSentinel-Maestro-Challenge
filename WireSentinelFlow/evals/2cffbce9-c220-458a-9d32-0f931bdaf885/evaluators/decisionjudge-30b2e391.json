@@ -1,0 +1,18 @@
+{
+  "version": "1.0",
+  "id": "decisionjudge-30b2e391",
+  "name": "DecisionJudge",
+  "description": "LLM judges whether the decision is appropriate for the scenario",
+  "evaluatorTypeId": "uipath-llm-judge-output-semantic-similarity",
+  "evaluatorConfig": {
+    "name": "DecisionJudge",
+    "prompt": "As an expert evaluator, analyze the semantic similarity of these JSON contents to determine a score from 0-100. Focus on comparing the meaning and contextual equivalence of corresponding fields, accounting for alternative valid expressions, synonyms, and reasonable variations in language while maintaining high standards for accuracy and completeness. Provide your score with a justification, explaining briefly and concisely why you gave that score.\n----\nExpectedOutput:\n{{ExpectedOutput}}\n----\nActualOutput:\n{{ActualOutput}}\n",
+    "temperature": 0,
+    "maxTokens": 8192,
+    "targetOutputKey": "*",
+    "model": "anthropic.claude-3-5-sonnet-20240620-v1:0"
+  },
+  "fileName": "decisionjudge-30b2e391.json",
+  "createdAt": "2026-06-02T23:04:31.634Z",
+  "updatedAt": "2026-06-02T23:04:31.634Z"
+}
