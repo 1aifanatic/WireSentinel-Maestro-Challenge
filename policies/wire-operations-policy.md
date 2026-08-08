@@ -5,7 +5,7 @@ Version: 1.0
 Effective date: 2026-07-28  
 Owner: Wire Operations
 
-This policy is synthetic and exists only for the UiPath Maestro Flow Challenge.
+This policy is synthetic example content and is not production banking policy.
 
 ## Supported intake
 

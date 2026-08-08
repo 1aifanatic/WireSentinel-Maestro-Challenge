@@ -40,11 +40,11 @@ Thumbs.db
 .idea/
 .vscode/
 
-# Keep only the curated final challenge export
+# Keep only the curated public source export
 release/*.uis
 !release/WireSentinel-Challenge-1.1.17-UI-Final.uis
 
-# Local learning-workspace and presentation-source artifacts
+# Local learning workspace and private presentation artifacts
 MISSION.md
 NOTES.md
 RESOURCES.md
