@@ -14,4 +14,4 @@ Hard overrides include an exact sanctions match, material document conflict, ina
 
 Agents are advisory. They cannot release, freeze, reject, or file a SAR.
 
-For the internal challenge tenant, tasks are assigned directly to the demo user. The role shown in the task remains the policy authority.
+Reviewer and group assignments are deployment-specific. The role shown in the task remains the policy authority.

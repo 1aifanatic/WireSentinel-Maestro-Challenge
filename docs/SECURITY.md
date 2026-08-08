@@ -1,6 +1,6 @@
 # WireSentinel security and authority model
 
-WireSentinel is a synthetic UiPath staging demonstration. It illustrates control boundaries for suspicious-wire review but does not move production funds, create a real regulatory filing, or replace a bank's security and compliance program.
+WireSentinel is a synthetic UiPath reference implementation. It illustrates control boundaries for suspicious-wire review but does not move production funds, create a real regulatory filing, or replace a bank's security and compliance program.
 
 ## Authority boundaries
 
@@ -36,7 +36,7 @@ Extracted evidence is normalized and checked before policy use. Instructions emb
 - Completed tasks are rendered read-only.
 - Reviewer and group mappings are environment-specific and must be rebound after import.
 
-The demo can use one permitted staging reviewer for presentation convenience. A production design must implement segregation of duties, least privilege, delegated coverage, and periodic access review.
+A reference deployment can use one permitted staging reviewer for evaluation convenience. A production design must implement segregation of duties, least privilege, delegated coverage, and periodic access review.
 
 ## Copilot controls
 
@@ -49,7 +49,7 @@ The demo can use one permitted staging reviewer for presentation convenience. A 
 - Release, rejection, hold, freeze, filing, and mutation requests are refused.
 - Deterministic policy and completed authorized human decisions outrank the model's suggestion.
 
-The current demo model configuration is `anthropic.claude-sonnet-4-6`, temperature `0`, and a 4,096-token limit. Those settings support repeatable demonstrations but do not make generated text deterministic or infallible.
+The current reference model configuration is `anthropic.claude-sonnet-4-6`, temperature `0`, and a 4,096-token limit. Those settings support repeatable evaluation but do not make generated text deterministic or infallible.
 
 ## Data and execution controls
 
@@ -64,7 +64,7 @@ Schema files declare entity RBAC, but actual enforcement depends on the target t
 
 ## Public source hygiene
 
-The public challenge source excludes:
+The public repository excludes:
 
 - credentials, secrets, and access tokens;
 - Integration Service connection exports;

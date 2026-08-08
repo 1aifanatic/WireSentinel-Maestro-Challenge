@@ -4,11 +4,11 @@
 
 [![UiPath Maestro](https://img.shields.io/badge/UiPath-Maestro-FA4616)](https://www.uipath.com/product/maestro)
 [![Coded Apps](https://img.shields.io/badge/Coded%20Apps-1.2.3-C85D3C)](#operations-experience)
-[![Challenge source](https://img.shields.io/badge/challenge%20source-1.1.17-496B5A)](release/WireSentinel-Challenge-1.1.17-UI-Final.uis)
+[![License: MIT](https://img.shields.io/badge/License-MIT-496B5A.svg)](LICENSE)
 
-[Open the live WireSentinel cockpit](https://aifanatic.staging.uipath.host/wiresentinel-cockpit) · [Read the architecture and demo guide](output/pdf/WireSentinel-Architecture-and-Demo-Guide.pdf) · [Download the clean Studio Web source](release/WireSentinel-Challenge-1.1.17-UI-Final.uis)
+[Open the live WireSentinel cockpit](https://aifanatic.staging.uipath.host/wiresentinel-cockpit) · [Read the architecture and component guide](output/pdf/WireSentinel-Architecture-and-Demo-Guide.pdf) · [Download the clean Studio Web source](release/WireSentinel-Challenge-1.1.17-UI-Final.uis)
 
-> The live cockpit is hosted in a UiPath staging environment and may require authentication. WireSentinel is a synthetic challenge demonstration: it does not move production funds or file real regulatory reports.
+> The live cockpit is hosted in a UiPath staging environment and may require authentication. WireSentinel is a synthetic reference implementation: it does not move production funds or file real regulatory reports.
 
 ## What problem does it solve?
 
@@ -35,14 +35,14 @@ The core design principle is simple: **AI extracts and explains; policy routes; 
 
 *The Coded Action App uses the same review workspace inside Action Center and becomes read-only after the task is completed.*
 
-## Three-minute Medium-risk story
+## Reference Medium-risk scenario
 
-The primary demo uses the two synthetic files in `sample-data/`:
+The reference scenario uses the two synthetic files in `sample-data/`:
 
 - `WS-E2E-MED-002_wire.pdf` — the payment instruction: request, customer, amount, beneficiary, destination, and routing evidence.
 - `WS-E2E-MED-002_invoice.pdf` — the business justification: supplier, invoice number, and invoice total.
 
-The wire instruction is required by the current contract; the supporting invoice is technically optional. Both are used in the Medium demo because the use case is about **cross-document validation**, not merely reading a single PDF. IXP classifies and extracts each document, then WireSentinel checks whether the instruction is supported by the invoice. Unsupported or excess documents and material amount mismatches become deterministic hard-stop signals. Confidence values are preserved as evidence, although the current executable policy does not yet enforce confidence thresholds.
+The wire instruction is required by the current contract; the supporting invoice is technically optional. Both are used because the reference scenario is about **cross-document validation**, not merely reading a single PDF. IXP classifies and extracts each document, then WireSentinel checks whether the instruction is supported by the invoice. Unsupported or excess documents and material amount mismatches become deterministic hard-stop signals. Confidence values are preserved as evidence, although the current executable policy does not yet enforce confidence thresholds.
 
 For the proven Medium scenario, the deterministic policy produces:
 
@@ -115,7 +115,7 @@ The cockpit reads these records as the operational portfolio. The Copilot reache
 
 ## How Ask WireSentinel works
 
-The cockpit opens a case-scoped conversational drawer backed by `WireSentinelCopilot`. The current demo configuration uses `anthropic.claude-sonnet-4-6` with temperature `0` and a 4,096-token response limit. Every operational answer must first call the single `WireSentinelOperationalQuery` tool, which returns bounded and masked Data Fabric evidence.
+The cockpit opens a case-scoped conversational drawer backed by `WireSentinelCopilot`. The current agent configuration uses `anthropic.claude-sonnet-4-6` with temperature `0` and a 4,096-token response limit. Every operational answer must first call the single `WireSentinelOperationalQuery` tool, which returns bounded and masked Data Fabric evidence.
 
 The agent is instructed to:
 
@@ -136,10 +136,10 @@ Copilot can summarize or draft reviewer rationale, but it cannot submit the task
 5. Select the IXP project/model resources used for the wire instruction and invoice.
 6. Publish or select the external Attachment Adapter dependency and bind both attachment-materialization calls.
 7. Confirm the Coded Action App, API Workflow, and agent references.
-8. Assign the Action Center tasks to an appropriate demo reviewer or group.
+8. Assign the Action Center tasks to an appropriate reviewer or group.
 9. Build the Coded Apps, run a Studio Web debug with the supplied PDFs, and enable the Gmail trigger only when the target connections are ready.
 
-Do not reuse demonstration resource identifiers as production configuration. The public source deliberately excludes tenant connection exports, user profiles, debug overrides, credentials, and tokens.
+Do not reuse source-environment resource identifiers as production configuration. The public source deliberately excludes tenant connection exports, user profiles, debug overrides, credentials, and tokens.
 
 ## Local Coded App checks
 
@@ -169,7 +169,7 @@ npm run dev --workspace WireSentinelReviewAction/source
 - Its SHA-256 is `FADD8DF36048D525E7405530DFC98946C04EA8DF48AE170BD302D4AE214B9BF9`.
 - Eight Coded App tests cover queue search, ordering, filtering and pagination; pending/completed/read-only tasks; specialized-task routing; rationale validation; Copilot connection and streaming states; and Markdown rendering.
 - The Web and Action apps build without TypeScript or Vite errors at version `1.2.3`.
-- A live Medium run demonstrated two-document IXP extraction, deterministic score 40, an Action Center approval, Maestro continuation, a sandbox release, Data Fabric write-back, cockpit visibility, and the structured outcome email.
+- A verified Medium reference run exercised two-document IXP extraction, deterministic score 40, an Action Center approval, Maestro continuation, a sandbox release, Data Fabric write-back, cockpit visibility, and the structured outcome email.
 
 ### Known CLI compatibility note
 
@@ -177,18 +177,18 @@ The Studio Web Flow 1.9 serialization was normalized to Flow schema 1.8 for clea
 
 Standalone `uip maestro flow validate` still reports the known Coded Action App HITL `completed`-port mismatch. The solution-level dry-run is Valid, and the affected Medium HITL path has been exercised successfully in Studio Web. The standalone warning is therefore documented rather than hidden.
 
-## Honest demo limitations
+## Known limitations
 
 - WireSentinel uses synthetic documents, reference data, identities, and banking outcomes.
 - The banking adapter records a sandbox result; it does not integrate with a core banking system.
 - The executable route set is Low, Medium, and Critical. A distinct High manager route and Invalid Document Exception route remain design extensions, not active paths.
-- The narrative policy files and executable scoring script are not fully aligned: their score bands, straight-through threshold, mismatch rule, and confidence guidance differ. The Flow script is authoritative for the demo.
+- The narrative policy files and executable scoring script are not fully aligned: their score bands, straight-through threshold, mismatch rule, and confidence guidance differ. The Flow script is authoritative for the reference implementation.
 - Customer and transaction-history sheets are read for context but are not yet factors in the executable score; all Google Sheets data is synthetic reference data.
 - Data Fabric audit records are append-oriented by application convention, not immutable-storage enforcement, and target-tenant RBAC must be verified after import.
 - Copilot queries case, document, audit, and policy evidence; it does not query the Banking Action entity directly.
 - The Web App requires target-tenant entity IDs through its environment variables; specialized-task detection also requires target-tenant verification.
-- The structured result email includes routing/SWIFT evidence for the synthetic demo; a production adaptation must mask or omit it.
-- The live URL and connected demo require the configured staging tenant and may not be anonymously accessible.
+- The structured result email includes routing/SWIFT evidence in the synthetic sample output; a production adaptation must mask or omit it.
+- The live URL and connected staging instance require the configured tenant and may not be anonymously accessible.
 - Connection, entity, IXP, reviewer, and external process mappings are environment-specific after import.
 - The repository demonstrates governance patterns; production rollout would still require formal access design, segregation of duties, data retention, monitoring, model governance, and operational support.
 
@@ -212,17 +212,19 @@ Standalone `uip maestro flow validate` still reports the known Coded Action App 
 ├── evidence/
 ├── docs/
 ├── output/pdf/
-└── release/
+├── release/
+├── CONTRIBUTING.md
+└── LICENSE
 ```
 
-## Challenge materials
+## Documentation and community
 
-- [Architecture and three-minute demo guide](output/pdf/WireSentinel-Architecture-and-Demo-Guide.pdf)
-- [Three-minute storyboard](docs/DEMO-STORYBOARD.md)
-- [Submission readiness checklist](docs/CHALLENGE-SUBMISSION-READY.md)
+- [Architecture and component guide](output/pdf/WireSentinel-Architecture-and-Demo-Guide.pdf)
 - [Security and authority model](docs/SECURITY.md)
+- [Contributing guide](CONTRIBUTING.md)
+- [MIT license](LICENSE)
 - [Clean Studio Web source export](release/WireSentinel-Challenge-1.1.17-UI-Final.uis)
 
----
+## License
 
-Built for the UiPath Maestro Flow Challenge.
+WireSentinel source code and project documentation are available under the [MIT License](LICENSE). UiPath product names and trademarks belong to UiPath, and third-party packages remain subject to their respective licenses.
